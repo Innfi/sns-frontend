@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useSelector, useDispatch } from 'react-redux';
+import { signUp } from './redux/reducks';
 
 function Copyright() {
   return (
@@ -48,6 +50,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const userState = useSelector((store) => store);
+
+  console.log('userState: ', userState);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -103,6 +109,7 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={ () => dispatch(signUp(userState)) }
           >
             Sign Up
           </Button>

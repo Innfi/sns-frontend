@@ -7,28 +7,28 @@ const SIGN_UP = 'SIGN_UP';
 //state models
 
 const initialState = {
-    userId: '',
-    nickname: '',
-    email: ''
+    userId: 'aa',
+    nickname: 'bb',
+    email: 'bb@cc.com'
 };
 
 //reducers
 
 const accountReducer = (state = initialState, action) => {
     switch(action.type) {
-        case SIGN_IN:
-            return { //FIXME
+        case SIGN_IN: return state;
+            //return { //FIXME
 
-            };
-        case SIGN_UP:
-            return { //FIXME
+            //};
+        case SIGN_UP: return state;
+            //return { //FIXME
 
-            };
+            //};
         default: return state;
     }
 };
 
-const reducers = combineReducers(accountReducer);
+export const rootReducer = combineReducers({accountReducer});
 
 //actions 
 
@@ -48,4 +48,4 @@ export const signIn = (signInInfo) => ({
 
 //store
 
-export const store = createStore(reducers);
+export const store = createStore(rootReducer);
