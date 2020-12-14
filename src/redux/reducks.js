@@ -1,4 +1,6 @@
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, bindActionCreators, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import axios from 'axios';
 
 
 const SIGN_IN = 'SIGN_IN';
@@ -20,10 +22,12 @@ const accountReducer = (state = initialState, action) => {
             //return { //FIXME
 
             //};
-        case SIGN_UP: return state;
-            //return { //FIXME
-
-            //};
+        case SIGN_UP: 
+            return {
+                userId: state.userId,
+                nickname: state.nickname,
+                email: state.nickname
+            };
         default: return state;
     }
 };
@@ -32,20 +36,41 @@ export const rootReducer = combineReducers({accountReducer});
 
 //actions 
 
-export const signUp = (signUpInfo) => ({
-    type: SIGN_UP, 
-    payload: {
-        signUpInfo
-    }
-});
+export const dummySignUp = () => {
+    return {
+        type: SIGN_UP,
+        payload: {
+            userId: '111',
+            nickname: 'none',
+            email: 'not@exist.com',
+        }
+    };
+};
 
-export const signIn = (signInInfo) => ({
-    type: SIGN_IN,
-    payload: {
-        signInInfo
-    }
-});
+export const signUpThunk = () => async(dispatch, getState) => {
+    const response = await axios.get('http://localhost:3001/users/123');
+    console.log('from axios.get: ', response.data);
+
+    dispatch({
+        type: SIGN_UP,
+        payload: {
+            userId: '111',
+            nickname: 'none',
+            email: 'not@exist.com',
+        }
+    });
+};
 
 //store
 
-export const store = createStore(rootReducer);
+export const store = createStore(
+    rootReducer, 
+    applyMiddleware(thunk)
+);
+
+export const loginActions = bindActionCreators(
+    {
+        signUpThunk
+    },
+    store.dispatch
+)

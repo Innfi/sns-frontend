@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useSelector, useDispatch } from 'react-redux';
-import { signUp } from './redux/reducks';
+import { loginActions, dummySignUp } from './redux/reducks';
 
 function Copyright() {
   return (
@@ -109,7 +109,7 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={ () => dispatch(signUp(userState)) }
+            onClick={ () => dispatch(dummySignUp()) }
           >
             Sign Up
           </Button>
