@@ -12,8 +12,16 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { useSelector, useDispatch } from 'react-redux';
-import { loginActions, dummySignUp } from './redux/reducks';
+import { Switch, Route, Link as RouterLink } from 'react-router-dom';
+import PublicPage from './PublicPage';
+import PrivatePage from './PrivatePage';
+
+//import { useSelector, useDispatch } from 'react-redux';
+//import { loginActions, dummySignUp } from './redux/reducks';
+
+
+/**
+ */
 
 function Copyright() {
   return (
@@ -50,10 +58,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const userState = useSelector((store) => store);
+  //const dispatch = useDispatch();
+  //const userState = useSelector((store) => store);
 
-  console.log('userState: ', userState);
+  //console.log('userState: ', userState);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -109,7 +117,7 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={ () => dispatch(dummySignUp()) }
+            onClick={ () => {} }
           >
             Sign Up
           </Button>
@@ -122,6 +130,16 @@ export default function SignUp() {
           </Grid>
         </form>
       </div>
+      <div>
+        <RouterLink to="/public">to public</RouterLink>
+      </div>
+      <div>
+        <RouterLink to="/private">to private</RouterLink>
+      </div>
+      <Switch>
+        <Route path="/public" exact={true} component={PublicPage} />
+        <Route path="/private" exact={true} component={PrivatePage} />
+      </Switch>
     </Container>
   );
 }
