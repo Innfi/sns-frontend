@@ -12,7 +12,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Switch, Route, Link as RouterLink } from 'react-router-dom';
+import { Switch, Route, Link as RouterLink, useHistory, 
+  Redirect } from 'react-router-dom';
 import PublicPage from './PublicPage';
 import PrivatePage from './PrivatePage';
 
@@ -58,10 +59,23 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
+  const history = useHistory();
   //const dispatch = useDispatch();
   //const userState = useSelector((store) => store);
 
   //console.log('userState: ', userState);
+
+  let testFlag = false;
+
+  const handleSubmit = () => {
+    console.log('handleSubmit');
+    testFlag = true;
+  };
+
+  if(testFlag === true) {
+    console.log('testFlag true')
+    return <PublicPage />;
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -117,7 +131,7 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={ () => {} }
+            onClick={ () => { handleSubmit(); } }
           >
             Sign Up
           </Button>

@@ -4,7 +4,8 @@ import ReactDOM from 'react-dom';
 //import { store } from './redux/reducks'
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
-import SignUp from './App';
+//import SignUp from './App';
+import AppTest from './AppTest';
 
 /**
     <Provider store={store} >
@@ -12,10 +13,11 @@ import SignUp from './App';
  */
 
 ReactDOM.render(
-  <React.StrictMode>
-     <BrowserRouter>
-      <SignUp />
-     </BrowserRouter>
-  </React.StrictMode>,
+  //<React.StrictMode>
+  //   <BrowserRouter>
+  //    <SignUp />
+  //   </BrowserRouter>
+  //</React.StrictMode>,
+  <AppTest />,
   document.getElementById('root')
 );
