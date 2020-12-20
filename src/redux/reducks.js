@@ -9,9 +9,9 @@ const SIGN_UP = 'SIGN_UP';
 //state models
 
 const initialState = {
-    userId: 'aa',
     nickname: 'bb',
-    email: 'bb@cc.com'
+    email: 'bb@cc.com',
+    isAuthenticated: false
 };
 
 //reducers
@@ -22,11 +22,12 @@ const accountReducer = (state = initialState, action) => {
             //return { //FIXME
 
             //};
-        case SIGN_UP: 
+        case SIGN_UP:
+            console.log('signup called');
             return {
-                userId: state.userId,
-                nickname: state.nickname,
-                email: state.nickname
+                nickname: action.payload.nickname,
+                email: action.payload.email,
+                isAuthenticated: action.payload.isAuthenticated
             };
         default: return state;
     }
@@ -35,28 +36,16 @@ const accountReducer = (state = initialState, action) => {
 export const rootReducer = combineReducers({accountReducer});
 
 //actions 
-
-export const dummySignUp = () => {
-    return {
-        type: SIGN_UP,
-        payload: {
-            userId: '111',
-            nickname: 'none',
-            email: 'not@exist.com',
-        }
-    };
-};
-
-export const signUpThunk = () => async(dispatch, getState) => {
-    const response = await axios.get('http://localhost:3001/users/123');
-    console.log('from axios.get: ', response.data);
+export const signUpThunk = (data) => async(dispatch, getState) => {
+    console.log('data: ', data);
+    const response = await axios.post('http://localhost:1330', data);
 
     dispatch({
         type: SIGN_UP,
         payload: {
-            userId: '111',
-            nickname: 'none',
-            email: 'not@exist.com',
+            nickname: response.data.nickname,
+            email: response.data.email,
+            isAuthenticated: true
         }
     });
 };
@@ -67,10 +56,3 @@ export const store = createStore(
     rootReducer, 
     applyMiddleware(thunk)
 );
-
-export const loginActions = bindActionCreators(
-    {
-        signUpThunk
-    },
-    store.dispatch
-)

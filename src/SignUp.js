@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,13 +14,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Switch, Route, Link as RouterLink, useHistory, 
   Redirect } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { signUpThunk } from './redux/reducks';
 
-//import { useSelector, useDispatch } from 'react-redux';
-//import { loginActions, dummySignUp } from './redux/reducks';
-
-
-/**
- */
 
 function Copyright() {
   return (
@@ -58,17 +54,19 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
   const classes = useStyles();
   const history = useHistory();
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
   //const userState = useSelector((store) => store);
 
-  //console.log('userState: ', userState);
+  const [userdata, setUserData] = useState({
+    nickname: '',
+    email: '',
+    password: ''
+  });
 
-  function handleSubmit() {
-    console.log('handleSumbit');
+  function handleSubmit(e) {
+    console.log('handleSumbit: ', userdata);
+    dispatch(signUpThunk(userdata));
     history.push('/public');
-    //return (
-    //  <Redirect to={{pathname: '/public'}} />
-    //);
   }
 
   return (
@@ -92,7 +90,8 @@ export default function SignUp() {
                 fullWidth
                 id="nickname"
                 label="nickname"
-                autoFocus
+                autoFocus 
+                onChange={(e) => setUserData({...userdata, nickname: e.target.value})}
               />
             </Grid>
             <Grid item xs={12}>
@@ -104,6 +103,7 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={(e) => setUserData({...userdata, email: e.target.value})}
               />
             </Grid>
             <Grid item xs={12}>
@@ -116,6 +116,7 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={(e) => setUserData({...userdata, password: e.target.value})}
               />
             </Grid>
           </Grid>
