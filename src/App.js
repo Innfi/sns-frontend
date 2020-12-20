@@ -1,6 +1,5 @@
 import React from 'react';
-import { Switch, Route, Link as RouterLink, useHistory, 
-  Redirect } from 'react-router-dom';
+import { Switch, Route, Link as RouterLink, Redirect } from 'react-router-dom';
 import SignUp from './SignUp';
 import PublicPage from './PublicPage';
 import PrivatePage from './PrivatePage';
@@ -22,6 +21,7 @@ export default function App() {
               <Route path="/signup" exact={true} component={SignUp} />
               <Route path="/public" exact={true} component={PublicPage} />
               <Route path="/private" exact={true} component={PrivatePage} />
+              <Redirect to="/" />
             </Switch>
         </>
     );

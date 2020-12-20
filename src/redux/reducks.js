@@ -1,4 +1,4 @@
-import { createStore, combineReducers, bindActionCreators, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import axios from 'axios';
 
@@ -11,7 +11,8 @@ const SIGN_UP = 'SIGN_UP';
 const initialState = {
     nickname: 'bb',
     email: 'bb@cc.com',
-    isAuthenticated: false
+    isAuthenticated: false,
+    userTimeline: []
 };
 
 //reducers
@@ -23,11 +24,12 @@ const accountReducer = (state = initialState, action) => {
 
             //};
         case SIGN_UP:
-            console.log('signup called');
+            console.log('signup called: ', action.payload);
             return {
                 nickname: action.payload.nickname,
                 email: action.payload.email,
-                isAuthenticated: action.payload.isAuthenticated
+                isAuthenticated: action.payload.isAuthenticated,
+                userTimeline: action.payload.userTimeline
             };
         default: return state;
     }
@@ -36,18 +38,22 @@ const accountReducer = (state = initialState, action) => {
 export const rootReducer = combineReducers({accountReducer});
 
 //actions 
-export const signUpThunk = (data) => async(dispatch, getState) => {
-    console.log('data: ', data);
+export const signUpThunk = (data, history) => async(dispatch, getState) => {
     const response = await axios.post('http://localhost:1330', data);
+
+    console.log('response: ', response.data);
 
     dispatch({
         type: SIGN_UP,
         payload: {
             nickname: response.data.nickname,
             email: response.data.email,
-            isAuthenticated: true
+            isAuthenticated: response.data.isAuthenticated,
+            userTimeline: response.data.userTimeline
         }
     });
+
+    history.push('/private');
 };
 
 //store
