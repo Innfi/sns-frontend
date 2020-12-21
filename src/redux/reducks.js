@@ -9,6 +9,7 @@ const SIGN_UP = 'SIGN_UP';
 //state models
 
 const initialState = {
+    userId: '',
     nickname: 'bb',
     email: 'bb@cc.com',
     isAuthenticated: false,
@@ -19,17 +20,19 @@ const initialState = {
 
 const accountReducer = (state = initialState, action) => {
     switch(action.type) {
-        case SIGN_IN: return state;
-            //return { //FIXME
-
-            //};
+        case SIGN_IN: 
+            console.log('signup called: ', action.payload);
+            return { 
+                ...state,
+                isAuthenticated: action.payload.isAuthenticated,
+                userTimeline: action.payload.userTimeline
+            };
         case SIGN_UP:
             console.log('signup called: ', action.payload);
             return {
+                userId: action.payload.userId,
                 nickname: action.payload.nickname,
-                email: action.payload.email,
-                isAuthenticated: action.payload.isAuthenticated,
-                userTimeline: action.payload.userTimeline
+                email: action.payload.email
             };
         default: return state;
     }
@@ -39,21 +42,53 @@ export const rootReducer = combineReducers({accountReducer});
 
 //actions 
 export const signUpThunk = (data, history) => async(dispatch, getState) => {
-    const response = await axios.post('http://localhost:1330', data);
+    axios.post('http://localhost:1330', data)
+    .then((value) => {
+        const response = value.data;
+        console.log('signUp response: ', response);
 
-    console.log('response: ', response.data);
+        dispatch({
+            type: SIGN_UP,
+            payload: {
+                userId: response.userId,
+                nickname: response.nickname,
+                email: response.email
+            }
+        });
+
+        history.push('/signin');
+    })
+    .catch((reason) => {
+        console.log('catch: ', reason);
+    });
+    //const response = await axios.post('http://localhost:1330', data);
+
+    //console.log('signUp response: ', response.data);
+
+    //dispatch({
+    //    type: SIGN_UP,
+    //    payload: {
+    //        userId: response.data.userId,
+    //        nickname: response.data.nickname,
+    //        email: response.data.email
+    //    }
+    //});
+
+    //history.push('/signin');
+};
+
+export const signInThunk = (data, history) => async (dispatch, getState) => {
+    const response = await axios.get('http://localhost:1330/signin', data);
+
+    console.log('signIn response: ', response.data);
 
     dispatch({
-        type: SIGN_UP,
+        type: SIGN_IN,
         payload: {
-            nickname: response.data.nickname,
-            email: response.data.email,
             isAuthenticated: response.data.isAuthenticated,
             userTimeline: response.data.userTimeline
         }
     });
-
-    history.push('/private');
 };
 
 //store

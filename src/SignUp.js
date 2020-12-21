@@ -48,13 +48,17 @@ export default function SignUp() {
     password: ''
   });
 
+  function handleChange(e) {
+      setUserData({...userdata, [e.target.name]: e.target.value});
+  }
+
   function handleSubmit(e) {
     //e.preventDefault();
 
     console.log('handleSumbit: ', userdata);
     dispatch(signUpThunk(userdata, history));
 
-    //history.push('/private');
+    history.push('/signin');
   }
 
   return (
@@ -67,7 +71,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={() => { handleSubmit(); }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -79,7 +83,7 @@ export default function SignUp() {
                 id="nickname"
                 label="nickname"
                 autoFocus 
-                onChange={(e) => setUserData({...userdata, nickname: e.target.value})}
+                onChange={(e) => handleChange(e)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -91,7 +95,7 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                onChange={(e) => setUserData({...userdata, email: e.target.value})}
+                onChange={(e) => handleChange(e)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -104,7 +108,7 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                onChange={(e) => setUserData({...userdata, password: e.target.value})}
+                onChange={(e) => handleChange(e)}
               />
             </Grid>
           </Grid>
@@ -114,13 +118,12 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={ () => { handleSubmit(); } }
           >
             Sign Up
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link onClick={() => history.push('/signin')} variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
