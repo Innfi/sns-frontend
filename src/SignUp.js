@@ -53,8 +53,6 @@ export default function SignUp() {
   }
 
   function handleSubmit(e) {
-    //e.preventDefault();
-
     console.log('handleSumbit: ', userdata);
     dispatch(signUpThunk(userdata, history));
 

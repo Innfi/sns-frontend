@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -45,13 +45,17 @@ export default function SignIn() {
     const dispatch = useDispatch();
     const history = useHistory();
 
+    useEffect(() => {
+      console.log('useEffect called');
+    }, []);
+
     function handleChange(e) {
         setLoginData({[e.target.name]: e.target.value});
     }
 
     function handleSubmit(e) {
         console.log('SignIn.handleSubmit: ', loginData);
-
+        e.preventDefault();
         dispatch(signInThunk(loginData, history));
     }
 
