@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -48,15 +48,20 @@ export default function SignUp() {
     password: ''
   });
 
+  useEffect(() => {
+    dispatch(signUpThunk(userdata, history));
+  }, [dispatch, history, userdata]);
+
   function handleChange(e) {
       setUserData({...userdata, [e.target.name]: e.target.value});
   }
 
   function handleSubmit(e) {
-    console.log('handleSumbit: ', userdata);
-    dispatch(signUpThunk(userdata, history));
+    console.log('handleSubmit: ', userdata);
+    e.preventDefault();
+    //dispatch(signUpThunk(userdata, history));
 
-    history.push('/signin');
+    //history.push('/signin');
   }
 
   return (
