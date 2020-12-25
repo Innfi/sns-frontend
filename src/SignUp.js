@@ -49,19 +49,16 @@ export default function SignUp() {
   });
 
   useEffect(() => {
-    dispatch(signUpThunk(userdata, history));
-  }, [dispatch, history, userdata]);
+
+  }, []);
 
   function handleChange(e) {
       setUserData({...userdata, [e.target.name]: e.target.value});
   }
 
   function handleSubmit(e) {
-    console.log('handleSubmit: ', userdata);
     e.preventDefault();
-    //dispatch(signUpThunk(userdata, history));
-
-    //history.push('/signin');
+    dispatch(signUpThunk(userdata, history));
   }
 
   return (
@@ -74,7 +71,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate onSubmit={() => { handleSubmit(); }}>
+        <form className={classes.form} noValidate onSubmit={(e) => { handleSubmit(e); }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField

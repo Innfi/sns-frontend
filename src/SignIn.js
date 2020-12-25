@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signInThunk } from './redux/reducks';
 
 
@@ -44,17 +44,17 @@ export default function SignIn() {
     const classes = useStyles();
     const dispatch = useDispatch();
     const history = useHistory();
+    const userState = useSelector((state) => state.accountReducer);
 
     useEffect(() => {
       console.log('useEffect called');
     }, []);
 
     function handleChange(e) {
-        setLoginData({[e.target.name]: e.target.value});
+        setLoginData({...loginData, [e.target.name]: e.target.value});
     }
 
     function handleSubmit(e) {
-        console.log('SignIn.handleSubmit: ', loginData);
         e.preventDefault();
         dispatch(signInThunk(loginData, history));
     }

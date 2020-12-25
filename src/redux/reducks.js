@@ -23,9 +23,6 @@ const accountReducer = (state = initialState, action) => {
         case SIGN_IN: 
             console.log('signup called: ', action.payload);
             return { 
-                userId: action.payload.userId,
-                nickname: action.payload.nickname,
-                email: action.payload.email,
                 isAuthenticated: action.payload.isAuthenticated,
                 userTimeline: action.payload.userTimeline
             };
