@@ -5,6 +5,9 @@ import axios from 'axios';
 
 const SIGN_IN = 'SIGN_IN';
 const SIGN_UP = 'SIGN_UP';
+const TIMELINE = 'TIMELINE';
+const FOLLOWS = 'FOLLOWS';
+const FOLLOWERS = 'FOLLOWERS';
 
 //state models
 
@@ -32,6 +35,11 @@ const accountReducer = (state = initialState, action) => {
                 userId: action.payload.userId,
                 nickname: action.payload.nickname,
                 email: action.payload.email
+            };
+        case TIMELINE:
+            console.log(`timeline called: ${action.payload}`);
+            return {
+                userTimeline: action.payload.userTimeline
             };
         //TOOD: add state: loading , error, etc
         default: return state;
@@ -87,6 +95,24 @@ export const signInThunk = (data, history) => async (dispatch, getState) => {
     .catch((reason) => {
         console.log('catch: ', reason);
         //TODO: error handling page
+    });
+};
+
+export const loadTimelineThunk = (data, history) => async(dispatch, getState) => {
+    const userId = getState().userId;
+    axios.get(`http://localhost:1330/timeline/${userId}`)
+    .then((value) => {
+        const response = value.data;
+        console.log('timeline response: ', response.data);
+
+        dispatch({
+            type: TIMELINE,
+            payload: {
+                userTimeline: response.data.timeline
+            }
+        });
+
+        history.push('/timeline');
     });
 };
 
