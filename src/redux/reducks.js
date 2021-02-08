@@ -16,7 +16,9 @@ const initialState = {
     nickname: 'bb',
     email: 'bb@cc.com',
     isAuthenticated: false,
-    userTimeline: []
+    userTimeline: [],
+    follows: [],
+    followers: []
 };
 
 //reducers
@@ -40,6 +42,16 @@ const accountReducer = (state = initialState, action) => {
             console.log(`timeline called: ${action.payload}`);
             return {
                 userTimeline: action.payload.userTimeline
+            };
+        case FOLLOWS:
+            console.log(`follows called: ${action.payload}`);
+            return {
+                follows: action.payload.follows
+            };
+        case FOLLOWERS:
+            console.log(`followers called: ${action.payload}`);
+            return {
+                followers: action.payload.followers
             };
         //TOOD: add state: loading , error, etc
         default: return state;
@@ -103,16 +115,52 @@ export const loadTimelineThunk = (data, history) => async(dispatch, getState) =>
     axios.get(`http://localhost:1330/timeline/${userId}`)
     .then((value) => {
         const response = value.data;
-        console.log('timeline response: ', response.data);
+        console.log('timeline response: ', response);
 
         dispatch({
             type: TIMELINE,
             payload: {
-                userTimeline: response.data.timeline
+                userTimeline: response.timeline
             }
         });
 
         history.push('/timeline');
+    });
+};
+
+export const loadFollowsThunk = (data, history) => async (dispatch, getState) => {
+    const userId = getState().userId;
+    axios.get(`http://localhost:1330/follows/${userId}`)
+    .then((value) => {
+        const response = value.data;
+        console.log(`follows response: ${response}`);
+
+        dispatch({
+            type: FOLLOWS,
+            payload: {
+                follows: response.follows
+            }
+        });
+
+        history.push('/follows');
+    });
+};
+
+export const loadFollowersThunk = (data, history) => async (dispatch, getState) => {
+    const userId = getState().userId;
+    axios.get(`http://localhost:1330/followers/${userId}`)
+    .then((value) => {
+        const response = value.data;
+        console.log(`follows response: ${rersponse}`);
+
+        dispatch({
+            type: FOLLOWERS,
+            payload: {
+                followers: response.followers
+            }
+        });
+
+        history.push('/followers');
     });
 };
 
