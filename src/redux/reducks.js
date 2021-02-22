@@ -151,7 +151,7 @@ export const loadFollowersThunk = (data, history) => async (dispatch, getState) 
     axios.get(`http://localhost:1330/followers/${userId}`)
     .then((value) => {
         const response = value.data;
-        console.log(`follows response: ${rersponse}`);
+        console.log(`follows response: ${response}`);
 
         dispatch({
             type: FOLLOWERS,

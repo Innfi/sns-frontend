@@ -4,6 +4,7 @@ import SignUp from './SignUp';
 import SignIn from './SignIn';
 import PublicPage from './PublicPage';
 import PrivatePage from './PrivatePage';
+import TimelineCard from './Timeline';
 
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
               <Route path="/signin" exact={true} component={SignIn} />
               <Route path="/public" exact={true} component={PublicPage} />
               <Route path="/private" exact={true} component={PrivatePage} />
+              <Route path="/timeline" exact={true} component={TimelineCard} />
               <Redirect to="/signin" />
             </Switch>
         </>
