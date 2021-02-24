@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardActionArea, CardHeader, CardActions, CardContent, 
     Button, Typography, Avatar, IconButton, Snackbar } from '@material-ui/core';
@@ -6,6 +6,10 @@ import { Person } from '@material-ui/icons';
 import { red } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CloseIcon from '@material-ui/icons/Close';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { loadTimelineThunk } from './redux/reducks';
+import { useHistory } from 'react-router-dom';
 
 
 const useStyles = makeStyles({
@@ -21,9 +25,12 @@ export default function TimelineCard() {
         url: 'test_url',
         nickname: 'nick',
         text: 'dummy text',
-    });
+    }); //temporary
 
     const [sbOpen, setSbOpen] = useState(false);
+    const dispatch = useDispatch();
+    const userState =  useSelector((state) => state.accountReducer);
+    const history = useHistory();
 
     const handleMoreVertClicked = () => {
         setSbOpen(true);
@@ -32,6 +39,10 @@ export default function TimelineCard() {
     const handleSnackbarClose = (event) => {
         setSbOpen(false);
     };
+
+    useEffect(() => {
+        dispatch(loadTimelineThunk({ userId: 'dummy', }, history));
+    }, [dispatch]);
 
     return (
         <React.Fragment>
@@ -44,8 +55,8 @@ export default function TimelineCard() {
                     </Avatar>
                 } 
                 action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon onClick={handleMoreVertClicked} />
+                    <IconButton aria-label="settings" onClick={handleMoreVertClicked}>
+                        <MoreVertIcon/>
                     </IconButton>
                 } 
                 title={tmData.userId}
