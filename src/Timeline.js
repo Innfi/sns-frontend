@@ -20,16 +20,12 @@ const useStyles = makeStyles({
 
 export default function TimelineCard() {
     const classes = useStyles();
-    const [tmData, setTmData] = useState({
-        userId: 'testId',
-        url: 'test_url',
-        nickname: 'nick',
-        text: 'dummy text',
-    }); //temporary
-
+    const [tmData, setTmData] = useState([]);
     const [sbOpen, setSbOpen] = useState(false);
+
     const dispatch = useDispatch();
-    const userState =  useSelector((state) => state.accountReducer);
+    const userTimeline = useSelector((state) => state.userTimeline);
+    //const setTmData(); 
     const history = useHistory();
 
     const handleMoreVertClicked = () => {
@@ -45,6 +41,11 @@ export default function TimelineCard() {
     }, [dispatch]);
 
     return (
+        {tmData}
+    );
+}
+
+/*
         <React.Fragment>
 
         <Card className={classes.root}>
@@ -87,5 +88,4 @@ export default function TimelineCard() {
             />
         </div>
         </React.Fragment>
-    );
-}
+*/
