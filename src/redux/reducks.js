@@ -2,6 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import axios from 'axios';
 
+const backendUrl = 'http://192.168.1.93:1330';
 
 const SIGN_IN = 'SIGN_IN';
 const SIGN_UP = 'SIGN_UP';
@@ -17,6 +18,7 @@ const initialState = {
     email: 'bb@cc.com',
     isAuthenticated: false,
     userTimeline: [],
+    loadingTimeline: true,
     follows: [],
     followers: []
 };
@@ -39,7 +41,7 @@ const accountReducer = (state = initialState, action) => {
                 email: action.payload.email
             };
         case TIMELINE:
-            console.log(`timeline called: ${action.payload}`);
+            console.log(`timeline called: ${JSON.stringify(action.payload.userTimeline)}`);
             return {
                 userTimeline: action.payload.userTimeline
             };
@@ -111,9 +113,13 @@ export const signInThunk = (data, history) => async (dispatch, getState) => {
 };
 
 export const loadTimelineThunk = (data, history) => async(dispatch, getState) => {
-    const userId = getState().userId;
-    axios.get(`http://localhost:1330/timeline/${userId}`)
-    .then((value) => {
+    const userId = data.userId;
+    axios.get(`http://localhost:1330/timeline/${userId}`, {
+        params: {
+            page: 1, 
+            limit: 3
+        }
+    }).then((value) => {
         const response = value.data;
         console.log('timeline response: ', response);
 
@@ -148,7 +154,7 @@ export const loadFollowsThunk = (data, history) => async (dispatch, getState) =>
 
 export const loadFollowersThunk = (data, history) => async (dispatch, getState) => {
     const userId = getState().userId;
-    axios.get(`http://localhost:1330/followers/${userId}`)
+    axios.get(`${backendUrl}/followers/${userId}`)
     .then((value) => {
         const response = value.data;
         console.log(`follows response: ${response}`);

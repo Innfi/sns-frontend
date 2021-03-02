@@ -24,8 +24,8 @@ export default function TimelineCard() {
     const [sbOpen, setSbOpen] = useState(false);
 
     const dispatch = useDispatch();
-    const userTimeline = useSelector((state) => state.userTimeline);
-    //const setTmData(); 
+    let userTimeline = useSelector((state) => state.userTimeline); 
+    let isLoading = useSelector((state) => state.loadingTimeline);
     const history = useHistory();
 
     const handleMoreVertClicked = () => {
@@ -37,11 +37,21 @@ export default function TimelineCard() {
     };
 
     useEffect(() => {
-        dispatch(loadTimelineThunk({ userId: 'dummy', }, history));
-    }, [dispatch]);
+        console.log('call loadTimeline');
+        dispatch(loadTimelineThunk({ userId: 'innfi', }, history));
+        console.log(`result: ${JSON.stringify(userTimeline)}`);
+        setTmData(userTimeline);
+
+    }, [dispatch], isLoading);
+
+    if(isLoading) return (
+        <div><p>loading...</p></div>
+    );
 
     return (
-        {tmData}
+        <div>
+            test
+        </div>
     );
 }
 
