@@ -22,10 +22,9 @@ export default function TimelineCard() {
     const classes = useStyles();
     const [tmData, setTmData] = useState([]);
     const [sbOpen, setSbOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const dispatch = useDispatch();
-    let userTimeline = useSelector((state) => state.userTimeline); 
-    let isLoading = useSelector((state) => state.loadingTimeline);
     const history = useHistory();
 
     const handleMoreVertClicked = () => {
@@ -37,12 +36,18 @@ export default function TimelineCard() {
     };
 
     useEffect(() => {
-        console.log('call loadTimeline');
-        dispatch(loadTimelineThunk({ userId: 'innfi', }, history));
-        console.log(`result: ${JSON.stringify(userTimeline)}`);
-        setTmData(userTimeline);
+        const loadTimeline = async () => {
+            console.log('call loadTimeline');
+            setIsLoading(true);
+            await dispatch(loadTimelineThunk({ userId: 'innfi', }, history));
+            setIsLoading(false);
+        };
 
-    }, [dispatch], isLoading);
+        loadTimeline();
+    }, [dispatch]);
+
+    const userTimeline = useSelector((state) => state.userTimeline); 
+    console.log(`result: ${JSON.stringify(userTimeline)}`);
 
     if(isLoading) return (
         <div><p>loading...</p></div>
