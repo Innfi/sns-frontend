@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardActionArea, CardHeader, CardActions, CardContent, 
     Button, Typography, Avatar, IconButton, Snackbar } from '@material-ui/core';
-import { Person } from '@material-ui/icons';
+//import { Person } from '@material-ui/icons';
 import { red } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CloseIcon from '@material-ui/icons/Close';
@@ -12,20 +12,41 @@ import { loadTimelineThunk } from './redux/reducks';
 import { useHistory } from 'react-router-dom';
 
 
+const TimelineCards = () => {
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        const loadTimeline = async () => {
+            setIsLoading(true);
+            await dispatch(loadTimelineThunk({ userId: 'innfi', }, history));
+            setIsLoading(false);
+        };
+
+        loadTimeline();
+    }, [dispatch]);
+
+    const userTimeline = useSelector((state) => state.accountReducer.userTimeline); 
+
+    if(isLoading) return (
+        <div><p>loading...</p></div>
+    );
+
+    return (
+        userTimeline.map((unit, index) => <TimelineUnit props={unit} key={index} />)
+    );
+}
+
 const useStyles = makeStyles({
     root: { maxWidth: 345 },
     avatar: { backgroundColor: red[500] }
 });
 
-
-export default function TimelineCard() {
+const TimelineUnit = (timeline, key) => {
+    const { authorId, userId, text } = timeline.props;
     const classes = useStyles();
-    const [tmData, setTmData] = useState([]);
     const [sbOpen, setSbOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-
-    const dispatch = useDispatch();
-    const history = useHistory();
 
     const handleMoreVertClicked = () => {
         setSbOpen(true);
@@ -35,39 +56,13 @@ export default function TimelineCard() {
         setSbOpen(false);
     };
 
-    useEffect(() => {
-        const loadTimeline = async () => {
-            console.log('call loadTimeline');
-            setIsLoading(true);
-            await dispatch(loadTimelineThunk({ userId: 'innfi', }, history));
-            setIsLoading(false);
-        };
-
-        loadTimeline();
-    }, [dispatch]);
-
-    const userTimeline = useSelector((state) => state.userTimeline); 
-    console.log(`result: ${JSON.stringify(userTimeline)}`);
-
-    if(isLoading) return (
-        <div><p>loading...</p></div>
-    );
-
     return (
-        <div>
-            test
-        </div>
-    );
-}
-
-/*
         <React.Fragment>
-
         <Card className={classes.root}>
             <CardHeader 
                 avatar={
                     <Avatar aria-label="cardAvatar" className={classes.avatar}>
-                        {tmData.nickname}
+                        {authorId}
                     </Avatar>
                 } 
                 action={
@@ -75,12 +70,12 @@ export default function TimelineCard() {
                         <MoreVertIcon/>
                     </IconButton>
                 } 
-                title={tmData.userId}
+                title={userId}
                 subheader="this is subheader"
                 />
             <CardActionArea>
                 <Typography gutterBottom variant="body2" color="textPrimary" component="p">
-                    {tmData.text} 
+                    {text} 
                 </Typography>
             </CardActionArea>
         </Card>
@@ -103,4 +98,7 @@ export default function TimelineCard() {
             />
         </div>
         </React.Fragment>
-*/
+    );
+};
+
+export default TimelineCards;
