@@ -2,13 +2,15 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import axios from 'axios';
 
-const backendUrl = 'http://192.168.1.93:1330';
-
 const SIGN_IN = 'SIGN_IN';
 const SIGN_UP = 'SIGN_UP';
 const TIMELINE = 'TIMELINE';
 const FOLLOWS = 'FOLLOWS';
 const FOLLOWERS = 'FOLLOWERS';
+const SUBMIT_TM = 'SUBMIT_TM';
+
+const backendUrl = 'http://localhost:1330';
+
 
 //state models
 
@@ -24,8 +26,7 @@ const initialState = {
 };
 
 //reducers
-
-const accountReducer = (state = initialState, action) => {
+const snsReducer = (state = initialState, action) => {
     switch(action.type) {
         case SIGN_IN: 
             console.log('signup called: ', action.payload);
@@ -43,8 +44,12 @@ const accountReducer = (state = initialState, action) => {
         case TIMELINE:
             console.log(`timeline called: ${JSON.stringify(action.payload.userTimeline)}`);
             return {
+                ...state, 
                 userTimeline: action.payload.userTimeline
             };
+        case SUBMIT_TM:
+            console.log(`submit timeline called: `);
+            return state; //FIXME
         case FOLLOWS:
             console.log(`follows called: ${action.payload}`);
             return {
@@ -60,11 +65,11 @@ const accountReducer = (state = initialState, action) => {
     }
 };
 
-export const rootReducer = combineReducers({accountReducer});
+export const rootReducer = combineReducers({snsReducer});
 
 //actions 
 export const signUpThunk = (data, history) => async(dispatch, getState) => {
-    axios.post('http://localhost:1330/login/signup', data)
+    axios.post(`${backendUrl}/login/signup`, data)
     .then((value) => {
         const response = value.data;
         console.log('signUp response: ', response);
@@ -88,7 +93,7 @@ export const signUpThunk = (data, history) => async(dispatch, getState) => {
 
 export const signInThunk = (data, history) => async (dispatch, getState) => {
     //dummy response
-    axios.post('http://localhost:1330/login/signin', data)
+    axios.post(`${backendUrl}/login/signin`, data)
     .then((value) => {
         const response = value.data;
         console.log('signIn response: ', response.data);
@@ -112,9 +117,10 @@ export const signInThunk = (data, history) => async (dispatch, getState) => {
     });
 };
 
+//loadTimeline
 export const loadTimelineThunk = (data, history) => async(dispatch, getState) => {
     const userId = data.userId;
-    axios.get(`http://localhost:1330/timeline/${userId}`, {
+    axios.get(`${backendUrl}/timeline/${userId}`, {
         params: {
             page: 1, 
             limit: 3
@@ -129,14 +135,31 @@ export const loadTimelineThunk = (data, history) => async(dispatch, getState) =>
                 userTimeline: response.timeline
             }
         });
+    });
+};
+
+//submitTimeline
+export const submitTimelineThunk = (data, history) => async (dispatch, getState) => {
+    axios.post(`${backendUrl}/timeline`, data)
+    .then((value) => {
+        const response = value.data;
+        console.log('submitTimeline] response: ', response.data);
+
+        dispatch({
+            type: SUBMIT_TM,
+            payload: {
+                newTimeline: response.data
+            }
+        }); 
 
         history.push('/timeline');
     });
 };
 
+//loadFollows
 export const loadFollowsThunk = (data, history) => async (dispatch, getState) => {
     const userId = getState().userId;
-    axios.get(`http://localhost:1330/follows/${userId}`)
+    axios.get(`${backendUrl}/follows/${userId}`)
     .then((value) => {
         const response = value.data;
         console.log(`follows response: ${response}`);
@@ -152,6 +175,7 @@ export const loadFollowsThunk = (data, history) => async (dispatch, getState) =>
     });
 };
 
+//loadFollowers
 export const loadFollowersThunk = (data, history) => async (dispatch, getState) => {
     const userId = getState().userId;
     axios.get(`${backendUrl}/followers/${userId}`)
@@ -171,7 +195,6 @@ export const loadFollowersThunk = (data, history) => async (dispatch, getState) 
 };
 
 //store
-
 export const store = createStore(
     rootReducer, 
     applyMiddleware(thunk)

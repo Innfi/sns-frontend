@@ -44,7 +44,6 @@ export default function SignIn() {
     const classes = useStyles();
     const dispatch = useDispatch();
     const history = useHistory();
-    const userState = useSelector((state) => state.accountReducer);
 
     useEffect(() => {
       console.log('useEffect called');
