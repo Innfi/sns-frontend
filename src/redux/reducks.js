@@ -31,12 +31,14 @@ const snsReducer = (state = initialState, action) => {
         case SIGN_IN: 
             console.log('signup called: ', action.payload);
             return { 
+                ...state,
                 isAuthenticated: action.payload.isAuthenticated,
                 userTimeline: action.payload.userTimeline
             };
         case SIGN_UP:
             console.log('signup called: ', action.payload);
             return {
+                ...state,
                 userId: action.payload.userId,
                 nickname: action.payload.nickname,
                 email: action.payload.email
@@ -53,15 +55,17 @@ const snsReducer = (state = initialState, action) => {
         case FOLLOWS:
             console.log(`follows called: ${action.payload}`);
             return {
+                ...state,
                 follows: action.payload.follows
             };
         case FOLLOWERS:
             console.log(`followers called: ${action.payload}`);
             return {
+                ...state,
                 followers: action.payload.followers
             };
-        //TOOD: add state: loading , error, etc
-        default: return state;
+        default: 
+            return state;
     }
 };
 
@@ -113,6 +117,10 @@ export const signInThunk = (data, history) => async (dispatch, getState) => {
     })
     .catch((reason) => {
         console.log('catch: ', reason);
+        if (reason.response.status === 400) {
+            history.push('/signin');
+        }
+
         //TODO: error handling page
     });
 };

@@ -45,10 +45,6 @@ export default function SignIn() {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    useEffect(() => {
-      console.log('useEffect called');
-    }, []);
-
     function handleChange(e) {
         setLoginData({...loginData, [e.target.name]: e.target.value});
     }

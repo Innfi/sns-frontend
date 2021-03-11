@@ -48,10 +48,6 @@ export default function SignUp() {
     password: ''
   });
 
-  useEffect(() => {
-
-  }, []);
-
   function handleChange(e) {
       setUserData({...userdata, [e.target.name]: e.target.value});
   }
