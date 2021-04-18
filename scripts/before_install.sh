@@ -1,2 +1,5 @@
 #!/bin/bash
-rm -rf /home/ubuntu/sns-v1/*
+cd /var/www/html/sns-v1
+npm stop
+cd ..
+rm -rf /var/www/html/sns-v1

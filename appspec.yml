@@ -3,7 +3,7 @@ version: 0.0
 os: linux 
 files:
   - source: build/*
-destination: /home/ubuntu/sns-v1
+destination: /var/www/html/sns-v1
 BeforeInstall:
   - location: scripts/before_install.sh
 AfterInstall:
