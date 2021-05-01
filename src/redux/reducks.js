@@ -18,6 +18,7 @@ const initialState = {
     userId: '',
     nickname: 'bb',
     email: 'bb@cc.com',
+    loginToken: '',
     isAuthenticated: false,
     userTimeline: [],
     loadingTimeline: true,
@@ -108,6 +109,7 @@ export const signInThunk = (data, history) => async (dispatch, getState) => {
                 userId: response.data.userId,
                 nickname: response.data.nickname,
                 email: response.data.email,
+                loginToken: response.data.loginToken,
                 isAuthenticated: response.data.isAuthenticated,
                 userTimeline: response.data.userTimeline
             }
@@ -132,6 +134,9 @@ export const loadTimelineThunk = (data, history) => async(dispatch, getState) =>
         params: {
             page: 1, 
             limit: 3
+        }, 
+        headers: {
+            'Authorization': `Bearer ${getState().loginToken}`
         }
     }).then((value) => {
         const response = value.data;
