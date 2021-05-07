@@ -8,6 +8,7 @@ dotenv.config();
 
 const SIGNUP_RESP = 'SIGNUP_RESP';
 const SIGNIN_RESP = 'SIGNIN_RESP';
+const TEMP_RESP = 'TEMP_RESP';
 const ERROR = 'ERROR';
 
 //state model
@@ -16,7 +17,8 @@ const initialState = {
         email: '',
         token: '',
     },
-    errorMsg: ''
+    errorMsg: '',
+    userData: {}
 };
 
 //reducers
@@ -37,6 +39,11 @@ const snsReducer = (state = initialState, action) => {
             return {
                 ...state, 
                 errorMsg: action.payload.errorMsg
+            };
+        case TEMP_RESP:
+            return {
+                ...state,
+                userData: action.payload.userData
             };
         default: 
             return state;
@@ -90,6 +97,20 @@ export const signInThunk = (data, history) => async (dispatch, getState) => {
                 }
             }
         })
+    });
+};
+
+export const tempThunk = (data, history) => async (dispatch, getState) => {
+    axios.get(`http://localhost:1330/temp`)
+    .then((value) => {
+        const response = value.data;
+
+        dispatch({
+            type: TEMP_RESP,
+            payload: {
+                userData: response
+            }
+        });
     });
 };
 
