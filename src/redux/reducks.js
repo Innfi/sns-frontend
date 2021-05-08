@@ -17,6 +17,8 @@ const initialState = {
         email: '',
         token: '',
     },
+    email: '',
+    token: '',
     errorMsg: '',
     userData: {}
 };
@@ -31,9 +33,20 @@ const snsReducer = (state = initialState, action) => {
                 authData: action.payload.authData
             };
         case SIGNIN_RESP: 
+            console.log(`reducer: authData: ${JSON.stringify(action.payload.authData)}`);
+
+            const testState = {
+                ...state, 
+                email: action.payload.authData.email,
+                token: action.payload.authData.token
+            };
+
+            console.log(`afterState: ${JSON.stringify(testState)}`);
+
             return {
                 ...state, 
-                authData: action.payload.authData
+                email: action.payload.authData.email,
+                token: action.payload.authData.token
             };
         case ERROR:
             return {
@@ -86,21 +99,23 @@ export const signInThunk = (data, history) => async (dispatch, getState) => {
     axios.post(`http://localhost:1330/login/signin`, data) 
     .then((value) => {
         const response = value.data;
-        console.log(`signin response: ${JSON.stringify(response)}`);
 
         dispatch({
             type: SIGNIN_RESP,
             payload: {
                 authData: {
                     email: response.email,
-                    token: response.token
+                    token: response.token.jwtToken
                 }
             }
-        })
+        }); 
+
+        history.push('/');
     });
 };
 
 export const tempThunk = (data, history) => async (dispatch, getState) => {
+    console.log('tempThunk] before call get');
     axios.get(`http://localhost:1330/temp`)
     .then((value) => {
         const response = value.data;

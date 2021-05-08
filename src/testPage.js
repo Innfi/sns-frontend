@@ -1,21 +1,29 @@
 import React, { useEffect } from 'react';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { tempThunk } from './redux/reducks';
 
 
-export default function testPage() {
+export default function TestPage() {
     const dispatch = useDispatch();
     const history = useHistory();
-    const userState = useSelector((state) => state.snsReducer);
+    const userState = useSelector((state) => state.snsReducer, []);
 
     useEffect(() => {
+        //console.log(`userData: ${JSON.stringify(userState.userData)}`);
+
         if(userState.userData === {}) {
-            console.log('in useEffect');
+            //console.log('in useEffect');
             dispatch(tempThunk({}, history));
         }
     });
 
-    if(userState.authdata.token === '') {
+    //console.log(`userState: ${JSON.stringify(userState)}`);
+
+    if(userState.authdata?.token === undefined) {
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
