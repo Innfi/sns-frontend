@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { signInThunk } from '../redux/reducks';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,9 +14,6 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { signInThunk } from '../redux/reducks';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -44,6 +44,17 @@ export default function SignIn() {
     const classes = useStyles();
     const dispatch = useDispatch();
     const history = useHistory();
+    const userState = useSelector((state) => state.snsReducer);
+
+    console.log(`userState: ${JSON.stringify(userState)}`);
+
+    useEffect(() => {
+      console.log('in useEffect');
+      if(loginData.email === '') {
+        console.log('before setLoginData');
+        setLoginData({ email: userState.authData.email });
+      }
+    }, []);
 
     function handleChange(e) {
         setLoginData({...loginData, [e.target.name]: e.target.value});
@@ -75,8 +86,9 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
-              onChange={(e) => handleChange(e)}
-            />
+              onChange={(e) => handleChange(e)} 
+              defaultValue={loginData.email}>
+            </TextField>
             <TextField
               variant="outlined"
               margin="normal"
