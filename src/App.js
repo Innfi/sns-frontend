@@ -13,6 +13,7 @@ export default function App() {
                 <Route path='/signup' exact={true} component={SignUp} />
                 <Route path='/signin' exact={true} component={SignIn} />
                 <Route path='/temp' exact={true} component={TestPage} />
+                <Redirect to="/signin" />
             </Switch>
         </>
     );

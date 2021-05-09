@@ -10,20 +10,16 @@ import { tempThunk } from './redux/reducks';
 export default function TestPage() {
     const dispatch = useDispatch();
     const history = useHistory();
-    const userState = useSelector((state) => state.snsReducer, []);
+    const userState = useSelector((state) => state.snsReducer);
 
     useEffect(() => {
-        //console.log(`userData: ${JSON.stringify(userState.userData)}`);
-
-        if(userState.userData === {}) {
-            //console.log('in useEffect');
+        if(userState.userData.msg === undefined) {
+            console.log('here');
             dispatch(tempThunk({}, history));
         }
-    });
+    }, []);
 
-    //console.log(`userState: ${JSON.stringify(userState)}`);
-
-    if(userState.authdata?.token === undefined) {
+    if(userState.authData?.token === undefined) {
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -39,6 +35,8 @@ export default function TestPage() {
     return (
         <div>
             <h2>test page</h2>
+            <p>{userState.userData.msg}</p>
+            <p>{userState.userData.date}</p>
         </div>
     );
 };

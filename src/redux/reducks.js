@@ -17,8 +17,6 @@ const initialState = {
         email: '',
         token: '',
     },
-    email: '',
-    token: '',
     errorMsg: '',
     userData: {}
 };
@@ -27,26 +25,14 @@ const initialState = {
 const snsReducer = (state = initialState, action) => {
     switch(action.type) {
         case SIGNUP_RESP:
-            console.log(`reducer: authData: ${JSON.stringify(action.payload.authData)}`);
             return {
                 ...state, 
                 authData: action.payload.authData
             };
         case SIGNIN_RESP: 
-            console.log(`reducer: authData: ${JSON.stringify(action.payload.authData)}`);
-
-            const testState = {
-                ...state, 
-                email: action.payload.authData.email,
-                token: action.payload.authData.token
-            };
-
-            console.log(`afterState: ${JSON.stringify(testState)}`);
-
             return {
                 ...state, 
-                email: action.payload.authData.email,
-                token: action.payload.authData.token
+                authData: action.payload.authData
             };
         case ERROR:
             return {
@@ -67,7 +53,6 @@ export const rootReducer = combineReducers({snsReducer})
 
 //actions 
 export const signUpThunk = (data, history) => async(dispatch, getState) => {
-    console.log(process.env.BACKEND_URL);
     axios.post(`http://localhost:1330/login/signup`, data)
     .then((value) => {
         const response = value.data;
@@ -110,13 +95,16 @@ export const signInThunk = (data, history) => async (dispatch, getState) => {
             }
         }); 
 
-        history.push('/');
+        history.push('/temp');
     });
 };
 
 export const tempThunk = (data, history) => async (dispatch, getState) => {
-    console.log('tempThunk] before call get');
-    axios.get(`http://localhost:1330/temp`)
+    axios.get(`http://localhost:1330/temp`, {
+        headers: {
+            "Authorization": `Bearer ${getState().snsReducer.authData.token}`
+        }
+    })
     .then((value) => {
         const response = value.data;
 
@@ -126,6 +114,8 @@ export const tempThunk = (data, history) => async (dispatch, getState) => {
                 userData: response
             }
         });
+
+        history.push('/temp');
     });
 };
 
