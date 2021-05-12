@@ -17,4 +17,7 @@ phases:
 
 artifacts:
   files: 
-    - '**/*'
+    - 'build/*'
+    - 'package.json'
+    - 'package-lock.json'
+    - 'appspec.yml'
