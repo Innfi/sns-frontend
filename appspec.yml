@@ -4,11 +4,12 @@ os: linux
 files:
   - source: /
     destination: /var/www/html/sns-v1
-BeforeInstall:
-  - location: scripts/before_install.sh
-AfterInstall:
-  - location: scripts/after_install.sh
-ApplicationStart:
-  - location: scripts/start_server.sh
-ApplicationStop:
-  - location: scripts/stop_server.sh
+hooks:
+  BeforeInstall:
+    - location: scripts/before_install.sh
+  AfterInstall:
+    - location: scripts/after_install.sh
+  ApplicationStart:
+    - location: scripts/start_server.sh
+  ApplicationStop:
+    - location: scripts/stop_server.sh

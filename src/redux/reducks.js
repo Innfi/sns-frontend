@@ -53,7 +53,7 @@ export const rootReducer = combineReducers({snsReducer})
 
 //actions 
 export const signUpThunk = (data, history) => async(dispatch, getState) => {
-    axios.post(`http://localhost:1330/login/signup`, data)
+    axios.post(`${process.env.REACT_APP_BACKEND_URL}/login/signup`, data)
     .then((value) => {
         const response = value.data;
 
@@ -81,7 +81,7 @@ export const signUpThunk = (data, history) => async(dispatch, getState) => {
 };
 
 export const signInThunk = (data, history) => async (dispatch, getState) => {
-    axios.post(`http://localhost:1330/login/signin`, data) 
+    axios.post(`${process.env.REACT_APP_BACKEND_URL}/login/signin`, data) 
     .then((value) => {
         const response = value.data;
 
@@ -100,7 +100,7 @@ export const signInThunk = (data, history) => async (dispatch, getState) => {
 };
 
 export const tempThunk = (data, history) => async (dispatch, getState) => {
-    axios.get(`http://localhost:1330/temp`, {
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}/temp`, {
         headers: {
             "Authorization": `Bearer ${getState().snsReducer.authData.token}`
         }
