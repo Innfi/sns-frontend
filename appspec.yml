@@ -10,6 +10,6 @@ hooks:
   AfterInstall:
     - location: scripts/after_install.sh
   ApplicationStart:
-    - location: scripts/start_server.sh
+    - location: scripts/start_app.sh
   ApplicationStop:
-    - location: scripts/stop_server.sh
+    - location: scripts/stop_app.sh
