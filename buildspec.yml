@@ -18,6 +18,7 @@ phases:
 artifacts:
   files: 
     - 'build/*'
+    - 'build/**/*'
     - 'scripts/*'
     - 'package.json'
     - 'package-lock.json'
