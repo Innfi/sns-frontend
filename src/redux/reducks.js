@@ -8,8 +8,9 @@ dotenv.config();
 
 const SIGNUP_RESP = 'SIGNUP_RESP';
 const SIGNIN_RESP = 'SIGNIN_RESP';
-const TEMP_RESP = 'TEMP_RESP';
+const LOAD_TIMELINE_RESP = 'LOAD_TIMELINE_RESP';
 const ERROR = 'ERROR';
+const TEMP_RESP = 'TEMP_RESP';
 
 //state model
 const initialState = {
@@ -18,7 +19,8 @@ const initialState = {
         token: '',
     },
     errorMsg: '',
-    userData: {}
+    userData: {},
+    timeline: []
 };
 
 //reducers
@@ -39,6 +41,12 @@ const snsReducer = (state = initialState, action) => {
                 ...state, 
                 errorMsg: action.payload.errorMsg
             };
+        case LOAD_TIMELINE_RESP:
+            return {
+                ...state,
+                timeline: action.payload.userTimeline //fixme: aggregate
+            };
+        
         case TEMP_RESP:
             return {
                 ...state,
@@ -98,6 +106,34 @@ export const signInThunk = (data, history) => async (dispatch, getState) => {
         history.push('/temp');
     });
 };
+
+//localTimeline
+export const loadTimelineThunk = (data, history) => async(dispatch, getState) => {
+    const userId = data.userId;
+
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}/timeline/${userId}`, {
+        headers: {
+            "Authorization": `Bearer ${getState().snsReducer.authData.token}`
+        },
+        params: { //fixme
+            page: 1, 
+            limit: 3
+        }
+    })
+    .then((value) => {
+        const response = value.data;
+
+        dispatch({
+            type: LOAD_TIMELINE_RESP,
+            payload: {
+                userTimeline: response.timeline
+            }
+        });
+
+        history.push(`/timeline/${userId}`);
+    });
+};
+
 
 export const tempThunk = (data, history) => async (dispatch, getState) => {
     axios.get(`${process.env.REACT_APP_BACKEND_URL}/temp`, {
