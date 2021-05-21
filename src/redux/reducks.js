@@ -9,6 +9,7 @@ dotenv.config();
 const SIGNUP_RESP = 'SIGNUP_RESP';
 const SIGNIN_RESP = 'SIGNIN_RESP';
 const LOAD_TIMELINE_RESP = 'LOAD_TIMELINE_RESP';
+const SUBMIT_TIMELINE_RESP = 'SUBMIT_TIMELINE_RESP';
 const ERROR = 'ERROR';
 const TEMP_RESP = 'TEMP_RESP';
 
@@ -46,7 +47,11 @@ const snsReducer = (state = initialState, action) => {
                 ...state,
                 timeline: action.payload.userTimeline //fixme: aggregate
             };
-        
+        case SUBMIT_TIMELINE_RESP:
+            return {
+                ...state,
+                timeline: [...timeline, action.payload.newTimeline] 
+            };
         case TEMP_RESP:
             return {
                 ...state,
@@ -134,6 +139,20 @@ export const loadTimelineThunk = (data, history) => async(dispatch, getState) =>
     });
 };
 
+//submitTimeline
+export const submitTimelineThunk = (data, history) => async(dispatch, getState) => {
+    axios.post(`${backendUrl}/timeline`, data)
+    .then((value) => {
+        const response = value.data;
+
+        dispatch({
+            type: SUBMIT_TIMELINE_RESP,
+            payload: {
+                newTimeline: response.data
+            }
+        })
+    });
+};
 
 export const tempThunk = (data, history) => async (dispatch, getState) => {
     axios.get(`${process.env.REACT_APP_BACKEND_URL}/temp`, {
