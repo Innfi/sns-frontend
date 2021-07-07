@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { loadTimelineThunk } from '../redux/reducks'
 import classes from '*.module.css';
+import { TimelineForm } from './timelineForm';
 
 
-export default function TimelineCards() {
+export function TimelineCards() {
     const dispatch = useDispatch();
     const history = useHistory();
     const authData = useSelector((state) => state.snsReducer.authData);
@@ -34,6 +35,7 @@ export default function TimelineCards() {
     return (
         <div>
             <a>start from here</a>
+            <TimelineForm />
         </div>
     );
 }
