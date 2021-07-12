@@ -50,7 +50,7 @@ const snsReducer = (state = initialState, action) => {
         case SUBMIT_TIMELINE_RESP:
             return {
                 ...state,
-                timeline: [...timeline, action.payload.newTimeline] 
+                timeline: [...state.timeline, action.payload.newTimeline] 
             };
         case TEMP_RESP:
             return {
@@ -66,7 +66,7 @@ export const rootReducer = combineReducers({snsReducer})
 
 //actions 
 export const signUpThunk = (data, history) => async(dispatch, getState) => {
-    axios.post(`${process.env.REACT_APP_BACKEND_URL}/login/signup`, data)
+    axios.post(`${process.env.REACT_APP_BACKEND_URL}/signup`, data)
     .then((value) => {
         const response = value.data;
 
@@ -94,7 +94,7 @@ export const signUpThunk = (data, history) => async(dispatch, getState) => {
 };
 
 export const signInThunk = (data, history) => async (dispatch, getState) => {
-    axios.post(`${process.env.REACT_APP_BACKEND_URL}/login/signin`, data) 
+    axios.post(`${process.env.REACT_APP_BACKEND_URL}/signin`, data) 
     .then((value) => {
         const response = value.data;
 
@@ -103,7 +103,7 @@ export const signInThunk = (data, history) => async (dispatch, getState) => {
             payload: {
                 authData: {
                     email: response.email,
-                    token: response.token.jwtToken
+                    token: response.jwtToken
                 }
             }
         }); 
@@ -141,7 +141,7 @@ export const loadTimelineThunk = (data, history) => async(dispatch, getState) =>
 
 //submitTimeline
 export const submitTimelineThunk = (data, history) => async(dispatch, getState) => {
-    axios.post(`${backendUrl}/timeline`, data)
+    axios.post(`${process.env.REACT_APP_BACKEND_URL}/timeline`, data)
     .then((value) => {
         const response = value.data;
 
