@@ -12,12 +12,12 @@ export default function TestPage() {
     const history = useHistory();
     const userState = useSelector((state) => state.snsReducer);
 
-    useEffect(() => {
-        if(userState.userData.msg === undefined) {
-            console.log('here');
-            dispatch(tempThunk({}, history));
-        }
-    }, []);
+    // useEffect(() => {
+    //     if(userState.userData.msg === undefined) {
+    //         console.log('here');
+    //         dispatch(tempThunk({}, history));
+    //     }
+    // }, []);
 
     if(userState.authData?.token === undefined) {
         return (

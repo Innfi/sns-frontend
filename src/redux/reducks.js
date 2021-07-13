@@ -12,6 +12,8 @@ const LOAD_TIMELINE_RESP = 'LOAD_TIMELINE_RESP';
 const SUBMIT_TIMELINE_RESP = 'SUBMIT_TIMELINE_RESP';
 const ERROR = 'ERROR';
 const TEMP_RESP = 'TEMP_RESP';
+const TOGGLE_DRAWER_VISIBILITY = 'TOGGLE_DRAWER_VISIBILITY';
+const DRAWER_HIDDEN = 'DRAWER_HIDDEN';
 
 //state model
 const initialState = {
@@ -21,7 +23,8 @@ const initialState = {
     },
     errorMsg: '',
     userData: {},
-    timeline: []
+    timeline: [],
+    drawerVisible: false
 };
 
 //reducers
@@ -56,6 +59,11 @@ const snsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 userData: action.payload.userData
+            };
+        case TOGGLE_DRAWER_VISIBILITY:
+            return {
+                ...state, 
+                drawerVisible: !drawerVisible
             };
         default: 
             return state;
@@ -108,7 +116,7 @@ export const signInThunk = (data, history) => async (dispatch, getState) => {
             }
         }); 
 
-        history.push('/temp');
+        history.push('/entry');
     });
 };
 
@@ -154,25 +162,26 @@ export const submitTimelineThunk = (data, history) => async(dispatch, getState) 
     });
 };
 
-export const tempThunk = (data, history) => async (dispatch, getState) => {
-    axios.get(`${process.env.REACT_APP_BACKEND_URL}/temp`, {
-        headers: {
-            "Authorization": `Bearer ${getState().snsReducer.authData.token}`
-        }
-    })
-    .then((value) => {
-        const response = value.data;
 
-        dispatch({
-            type: TEMP_RESP,
-            payload: {
-                userData: response
-            }
-        });
+// export const tempThunk = (data, history) => async (dispatch, getState) => {
+//     axios.get(`${process.env.REACT_APP_BACKEND_URL}/temp`, {
+//         headers: {
+//             "Authorization": `Bearer ${getState().snsReducer.authData.token}`
+//         }
+//     })
+//     .then((value) => {
+//         const response = value.data;
 
-        history.push('/temp');
-    });
-};
+//         dispatch({
+//             type: TEMP_RESP,
+//             payload: {
+//                 userData: response
+//             }
+//         });
+
+//         history.push('/temp');
+//     });
+// };
 
 //store 
 export const store = createStore(

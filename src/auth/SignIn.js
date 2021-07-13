@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { signInThunk } from '../redux/reducks';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -44,17 +44,6 @@ export default function SignIn() {
     const classes = useStyles();
     const dispatch = useDispatch();
     const history = useHistory();
-    const userState = useSelector((state) => state.snsReducer);
-
-    console.log(`userState: ${JSON.stringify(userState)}`);
-
-    useEffect(() => {
-      console.log('in useEffect');
-      if(loginData.email === '') {
-        console.log('before setLoginData');
-        setLoginData({ email: userState.authData.email });
-      }
-    }, []);
 
     function handleChange(e) {
         setLoginData({...loginData, [e.target.name]: e.target.value});
