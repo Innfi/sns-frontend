@@ -7,6 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 
+import { toggleDrawer } from './redux/reducks';
+import { TemporaryDrawer } from './drawer';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,24 +43,19 @@ const useStyles = makeStyles((theme) => ({
 
 export function EntryPage() {
     const dispatch = useDispatch();
-    //const history = useHistory();
-    const userState = useSelector((state) => state.snsReducer);
+    //const userState = useSelector((state) => state.snsReducer);
     const classes = useStyles();
 
-    if(!userState.authData.token) {
-        return (
-            <div>
-                entry page (unauthorized)
-            </div>
-        );
-    }
+    // if(!userState.authData.token) {
+    //     return (
+    //         <div>
+    //             entry page (unauthorized)
+    //         </div>
+    //     );
+    // }
 
     const handleOnClickMenuButton = () => {
-        console.log('AppBar.menuButton');
-        dispatch({
-            type: TOGGLE_DRAWER_VISIBILITY
-        });
-        console.log(`toggle result: ${userState.drawerVisible}`);
+        dispatch(toggleDrawer());
     };
 
     return (
@@ -74,6 +71,7 @@ export function EntryPage() {
                     </Typography>
                 </Toolbar>
             </AppBar>
+            <TemporaryDrawer />
         </div>
     );
 };

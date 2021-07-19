@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
@@ -14,19 +15,28 @@ export const TemporaryDrawer = (props) => {
     const classes = useStyles();
     const [state, setState] = useState({
         top: false, 
-        left: true, 
+        left: false, 
         bottom: false, 
         right: false
     });
 
     const anchor='left';
 
-    const toggleDrawer = (anchor, open) => (event) => {
-        if(event.type === 'keydown' && 
-            (event.key === 'Tab' || event.key === 'Shift')) return;
+    const userState = useSelector((state) => state.snsReducer);
 
-        setState({ ...state, [anchor]: open });
-    };
+    const toggleDrawer = useCallback(
+        (anchor, open) => (event) => {
+            if(event.type === 'keydown' && 
+                (event.key === 'Tab' || event.key === 'Shift')) return;
+    
+            setState({ ...state, [anchor]: open });
+        }, [state ]
+    );
+
+    useEffect(() => {
+        console.log(`Drawer] in useEffect: ${userState.drawerVisible}`);
+        toggleDrawer(anchor, userState.drawerVisible);
+    }, [userState.drawerVisible, toggleDrawer]);
 
     const list = (anchor) => (
         <div onKeyDown={toggleDrawer(anchor, false)}>

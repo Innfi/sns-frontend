@@ -13,7 +13,6 @@ const SUBMIT_TIMELINE_RESP = 'SUBMIT_TIMELINE_RESP';
 const ERROR = 'ERROR';
 const TEMP_RESP = 'TEMP_RESP';
 const TOGGLE_DRAWER_VISIBILITY = 'TOGGLE_DRAWER_VISIBILITY';
-const DRAWER_HIDDEN = 'DRAWER_HIDDEN';
 
 //state model
 const initialState = {
@@ -62,8 +61,8 @@ const snsReducer = (state = initialState, action) => {
             };
         case TOGGLE_DRAWER_VISIBILITY:
             return {
-                ...state, 
-                drawerVisible: !drawerVisible
+                ...state,
+                drawerVisible: !state.drawerVisible
             };
         default: 
             return state;
@@ -162,6 +161,11 @@ export const submitTimelineThunk = (data, history) => async(dispatch, getState) 
     });
 };
 
+export const toggleDrawer = () => async(dispatch, getState) => {
+    dispatch({
+        type: TOGGLE_DRAWER_VISIBILITY
+    });
+};
 
 // export const tempThunk = (data, history) => async (dispatch, getState) => {
 //     axios.get(`${process.env.REACT_APP_BACKEND_URL}/temp`, {
