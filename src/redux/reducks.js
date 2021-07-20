@@ -62,7 +62,7 @@ const snsReducer = (state = initialState, action) => {
         case TOGGLE_DRAWER_VISIBILITY:
             return {
                 ...state,
-                drawerVisible: !state.drawerVisible
+                drawerVisible: action.payload.toggleDrawer
             };
         default: 
             return state;
@@ -161,9 +161,12 @@ export const submitTimelineThunk = (data, history) => async(dispatch, getState) 
     });
 };
 
-export const toggleDrawer = () => async(dispatch, getState) => {
+export const toggleDrawer = (toggle) => async(dispatch, getState) => {
     dispatch({
-        type: TOGGLE_DRAWER_VISIBILITY
+        type: TOGGLE_DRAWER_VISIBILITY,
+        payload: {
+            toggleDrawer: toggle
+        }
     });
 };
 
