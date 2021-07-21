@@ -28,9 +28,9 @@ export function TimelineCards() {
 
     const userTimeline = useSelector((state) => state.snsReducer.timeline);
 
-    if(isLoading) return (
-        <div><p>loading...</p></div>
-    );
+    // if(isLoading) return (
+    //     <div><p>loading...</p></div>
+    // );
 
     return (
         <div>
