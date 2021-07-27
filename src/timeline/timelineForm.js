@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import { CssBaseline } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+
+import { makeStyles } from '@material-ui/core/styles';
+import { CssBaseline, TextField, Typography, Container } from '@material-ui/core';
 import { submitTimelineThunk } from '../redux/reducks';
 
 

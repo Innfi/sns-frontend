@@ -4,6 +4,7 @@ import RootPage from './rootPage';
 import SignUp from './auth/SignUp';
 import SignIn from './auth/SignIn';
 import { EntryPage } from './entryPage';
+import { TimelineCards } from './timeline/timelineCards';
 
 export default function App() {
     return (
@@ -13,6 +14,7 @@ export default function App() {
                 <Route path='/signup' exact={true} component={SignUp} />
                 <Route path='/signin' exact={true} component={SignIn} />
                 <Route path='/entry' exact={true} component={EntryPage} />
+                <Route path="/timeline" exact={true} component={TimelineCards} />
                 <Redirect to="/signin" />
             </Switch>
         </>

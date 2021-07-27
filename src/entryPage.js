@@ -9,8 +9,7 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import { toggleDrawer } from './redux/reducks';
 import { TemporaryDrawer } from './drawer';
-import { TimelineCards } from './timeline/timeline';
-import { TimelineForm } from './timeline/timelineForm';
+import { TimelineCards } from './timeline/timelineCards';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -79,7 +78,6 @@ export function EntryPage() {
             </AppBar>
             <TemporaryDrawer />
             <TimelineCards />
-            <TimelineForm />
         </div>
     );
 };

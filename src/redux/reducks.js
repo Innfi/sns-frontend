@@ -22,7 +22,10 @@ const initialState = {
     },
     errorMsg: '',
     userData: {},
-    timeline: [],
+    timeline: [{
+        authorId: 'innfi',
+        text: 'timeline starts'
+    }],
     drawerVisible: false
 };
 
@@ -128,7 +131,7 @@ export const loadTimelineThunk = (data, history) => async(dispatch, getState) =>
             "Authorization": `Bearer ${getState().snsReducer.authData.token}`
         },
         params: { //fixme
-            page: 1, 
+            page: 0, 
             limit: 3
         }
     })
