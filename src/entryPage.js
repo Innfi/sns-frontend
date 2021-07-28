@@ -76,8 +76,14 @@ export function EntryPage() {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <TemporaryDrawer />
-            <TimelineCards />
+            <Grid container spacing={3}>
+                <Grid item xs={3}>
+                    <TemporaryDrawer />
+                </Grid>
+                <Grid item xs={3}>
+                    <TimelineCards />
+                </Grid>
+            </Grid>
         </div>
     );
 };
