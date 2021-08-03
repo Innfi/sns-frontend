@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { AppBar, Toolbar, IconButton, Typography, InputBase 
+import { AppBar, Toolbar, IconButton, Typography, InputBase, Grid 
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -10,6 +10,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import { toggleDrawer } from './redux/reducks';
 import { TemporaryDrawer } from './drawer';
 import { TimelineCards } from './timeline/timelineCards';
+import { TimelineForm } from './timeline/timelineForm';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -77,13 +78,15 @@ export function EntryPage() {
                 </Toolbar>
             </AppBar>
             <Grid container spacing={3}>
-                <Grid item xs={3}>
-                    <TemporaryDrawer />
-                </Grid>
+                <Grid item xs={3} />
                 <Grid item xs={3}>
                     <TimelineCards />
                 </Grid>
+                <Grid>
+                    <TimelineForm />
+                </Grid>
             </Grid>
+            <TemporaryDrawer />
         </div>
     );
 };
