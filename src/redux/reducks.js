@@ -24,8 +24,11 @@ const initialState = {
     userData: {},
     timeline: [{
         authorId: 'innfi',
-        text: 'timeline starts'
-    }],
+        text: 'timeline starts from here'
+    }, {
+        authorId: 'ennfi',
+        text: 'congrats!'
+    }], 
     drawerVisible: false
 };
 
@@ -172,26 +175,6 @@ export const toggleDrawer = (toggle) => async(dispatch, getState) => {
         }
     });
 };
-
-// export const tempThunk = (data, history) => async (dispatch, getState) => {
-//     axios.get(`${process.env.REACT_APP_BACKEND_URL}/temp`, {
-//         headers: {
-//             "Authorization": `Bearer ${getState().snsReducer.authData.token}`
-//         }
-//     })
-//     .then((value) => {
-//         const response = value.data;
-
-//         dispatch({
-//             type: TEMP_RESP,
-//             payload: {
-//                 userData: response
-//             }
-//         });
-
-//         history.push('/temp');
-//     });
-// };
 
 //store 
 export const store = createStore(

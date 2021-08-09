@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, CardActionArea, CardHeader, CardActions, CardContent, 
+import { Card, CardHeader, CardActions, CardContent, 
     Button, Typography, Avatar, IconButton, Snackbar } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
+import { Favorite, Share } from '@material-ui/icons';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -39,14 +40,22 @@ export const TimelineUnit = (timeline, key) => {
                         <MoreVertIcon/>
                     </IconButton>
                 } 
-                title="test"
-                subheader="this is subheader"
+                title={authorId}
+                subheader="users moment"
                 />
-            <CardActionArea>
-                <Typography gutterBottom variant="body2" color="textPrimary" component="p">
+            <CardContent>
+                <Typography variant="body2" color="textPrimary" component="p">
                     {text} 
                 </Typography>
-            </CardActionArea>
+            </CardContent>
+            <CardActions disableSpacing>
+                <IconButton aria-label="add to favorites">
+                    <Favorite />
+                </IconButton>
+                <IconButton aria-label="share">
+                    <Share />
+                </IconButton>
+            </CardActions>
         </Card>
         <div>
             <Snackbar anchorOrigin={{vertical: 'bottom', horizontal: 'right'}} 
