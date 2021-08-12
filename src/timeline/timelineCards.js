@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import { Grid } from '@material-ui/core';
 
 import { loadTimelineThunk } from '../redux/reducks'
-import { TimelineForm } from './timelineForm';
 import { TimelineUnit } from './timelineUnit';
 
 
@@ -30,9 +29,11 @@ export function TimelineCards() {
         <div><p>loading...</p></div>
     );
 
-    //<TimelineForm />
-
     return (
-        userTimeline.map((unit, index) => <TimelineUnit props={unit} key={index} />)
+        userTimeline.map((unit, index) => (
+            <Grid container spacing={3}>
+                <TimelineUnit props={unit} key={index} />
+            </Grid>
+        ))
     );
 }
