@@ -9,7 +9,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 
 const useStyles = makeStyles({
-    root: { maxWidth: 345 },
+    root: { maxWidth: 345, marginBottom: 10 },
     avatar: { backgroundColor: red[500] }
 });
 
