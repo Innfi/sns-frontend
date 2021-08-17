@@ -46,17 +46,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export function EntryPage() {
+export const EntryPage = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
+    const authData = useSelector((state) => state.snsReducer.authData);
 
-    // if(!userState.authData.token) {
-    //     return (
-    //         <div>
-    //             entry page (unauthorized)
-    //         </div>
-    //     );
-    // }
+    if(!authData.token) return (<RedirectPage />);
 
     const handleOnClickMenuButton = () => {
         dispatch(toggleDrawer(true));
@@ -85,6 +80,22 @@ export function EntryPage() {
                 </Grid>
             </Grid>
             <TemporaryDrawer />
+        </div>
+    );
+};
+
+const RedirectPage = () => {
+    const history = useHistory();
+
+    // useEffect(() => {
+    //     //settimeout? 
+
+    //     history.push('/signin');
+    // });
+
+    return (
+        <div>
+            entry page (unauthorized)
         </div>
     );
 };

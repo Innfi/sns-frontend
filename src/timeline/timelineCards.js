@@ -17,7 +17,7 @@ export function TimelineCards() {
     // useEffect(() => {
     //     const loadTimeline = async() => {
     //         setIsLoading(true);
-    //         await dispatch(loadTimelineThunk({ email: emailFromRedux}, history));
+    //         await dispatch(loadTimelineThunk({ email: emailFromRedux }, history));
     //         setIsLoading(false);
     //     };
 

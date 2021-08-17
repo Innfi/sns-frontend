@@ -1,6 +1,5 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import RootPage from './rootPage';
 import SignUp from './auth/SignUp';
 import SignIn from './auth/SignIn';
 import { EntryPage } from './mainpage/entry';
