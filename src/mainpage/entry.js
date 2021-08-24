@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { AppBar, Toolbar, IconButton, Typography, InputBase, Grid 
-} from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Typography, Grid, Container 
+    } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
@@ -14,7 +14,7 @@ import { TimelineForm } from '../timeline/timelineForm';
 
 
 const useStyles = makeStyles((theme) => ({
-    root: { flexGrow: 1},
+    root: { flexGrow: 1, marginBottom: 10 },
     menuButton: { marginRight: theme.spacing(2)},
     title: { 
         flexGrow:1, display: 'none', 
@@ -44,6 +44,16 @@ const useStyles = makeStyles((theme) => ({
             },
         },
     },
+    footer: {
+        borderTop: `1px solid ${theme.palette.divider}`,
+        marginTop: theme.spacing(8),
+        paddingTop: theme.spacing(3),
+        paddingBottom: theme.spacing(3),
+        [theme.breakpoints.up('sm')]: {
+          paddingTop: theme.spacing(6),
+          paddingBottom: theme.spacing(6),
+        },
+      },
 }));
 
 export const EntryPage = () => {
@@ -51,14 +61,15 @@ export const EntryPage = () => {
     const classes = useStyles();
     const authData = useSelector((state) => state.snsReducer.authData);
 
-    if(!authData.token) return (<RedirectPage />);
+    //if(!authData.token) return (<RedirectPage />);
 
     const handleOnClickMenuButton = () => {
         dispatch(toggleDrawer(true));
     };
 
     return (
-        <div className={classes.root}>
+        <div>
+            <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" className={classes.menuButton} 
@@ -70,16 +81,21 @@ export const EntryPage = () => {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Grid container spacing={3}>
-                <Grid item xs={3} />
-                <Grid item xs={3}>
-                    <TimelineCards />
-                </Grid>
-                <Grid>
-                    <TimelineForm />
-                </Grid>
-            </Grid>
             <TemporaryDrawer />
+            </div>
+            <div className={classes.root}>
+                <Grid container spacing={3}>
+                    <Grid item xs={3} />
+                    <Grid item xs={3}>
+                        <TimelineCards />
+                    </Grid>
+                    <Grid>
+                        <TimelineForm />
+                    </Grid>
+                </Grid>
+            </div>
+            <Container maxWidth="md" component="footer" className={classes.footer}>
+            </Container>
         </div>
     );
 };
