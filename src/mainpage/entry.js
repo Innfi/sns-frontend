@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { AppBar, Toolbar, IconButton, Typography, Grid, Container 
+import { AppBar, Toolbar, IconButton, Typography, Grid, Container, Divider 
     } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -45,14 +45,12 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     footer: {
-        borderTop: `1px solid ${theme.palette.divider}`,
-        marginTop: theme.spacing(8),
-        paddingTop: theme.spacing(3),
-        paddingBottom: theme.spacing(3),
-        [theme.breakpoints.up('sm')]: {
-          paddingTop: theme.spacing(6),
-          paddingBottom: theme.spacing(6),
-        },
+        position: 'absolute',
+        left: 0,
+        bottom: 0,
+        width: '100%',
+        padding: '80px 0',
+        color: 'black',
       },
 }));
 
@@ -94,7 +92,9 @@ export const EntryPage = () => {
                     </Grid>
                 </Grid>
             </div>
-            <Container maxWidth="md" component="footer" className={classes.footer}>
+            <Container component="footer" className={classes.footer}>
+                <Divider variant="middle" />
+                <Typography> ( footer text here ) </Typography>
             </Container>
         </div>
     );
