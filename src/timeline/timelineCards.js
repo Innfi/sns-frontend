@@ -14,15 +14,15 @@ export function TimelineCards() {
     const [isLoading, setIsLoading] = useState(false);    
     const userTimeline = useSelector((state) => state.snsReducer.timeline);
 
-    // useEffect(() => {
-    //     const loadTimeline = async() => {
-    //         setIsLoading(true);
-    //         await dispatch(loadTimelineThunk({ email: emailFromRedux }, history));
-    //         setIsLoading(false);
-    //     };
+    useEffect(() => {
+        const loadTimeline = async() => {
+            setIsLoading(true);
+            await dispatch(loadTimelineThunk({ email: emailFromRedux }, history));
+            setIsLoading(false);
+        };
 
-    //     loadTimeline();
-    // }, [dispatch]);
+        loadTimeline();
+    }, [dispatch]);
 
     if(isLoading) return (
         <div><p>loading...</p></div>

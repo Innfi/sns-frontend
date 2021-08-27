@@ -59,7 +59,7 @@ export const EntryPage = () => {
     const classes = useStyles();
     const authData = useSelector((state) => state.snsReducer.authData);
 
-    //if(!authData.token) return (<RedirectPage />);
+    if(!authData.token) return (<RedirectPage />);
 
     const handleOnClickMenuButton = () => {
         dispatch(toggleDrawer(true));
