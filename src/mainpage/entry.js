@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { AppBar, Toolbar, IconButton, Typography, Grid, Container, Divider 
-    } from '@material-ui/core';
+import { Typography, Grid, Container, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
 
 import { toggleDrawer } from '../redux/reducks';
 import { TemporaryDrawer } from './drawer';
 import { TimelineCards } from '../timeline/timelineCards';
 import { TimelineForm } from '../timeline/timelineForm';
+import { SnsAppbar } from './appbar';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -68,17 +66,7 @@ export const EntryPage = () => {
     return (
         <div>
             <div className={classes.root}>
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton edge="start" className={classes.menuButton} 
-                        onClick={handleOnClickMenuButton} color="inherit" aria-label="open drawer">
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        appbar header
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+            <SnsAppbar />
             <TemporaryDrawer />
             </div>
             <div className={classes.root}>
