@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Menu, AccountCircle } from '@material-ui/icons';
+
+import { signoutThunk } from '../redux/reducks';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -48,24 +52,51 @@ const useStyles = makeStyles((theme) => ({
 export const SnsAppbar = () => {
     const classes = useStyles();
 
+    const [ anchorEl, setAnchorEl ] = useState(null);
+    const handleClick = (e) => { setAnchorEl(e.currentTarget) };
+    const handleClose = () => { setAnchorEl(null) };
+
+    const dispatch = useDispatch();
+    const history = useHistory();
+
+    const openLogoutDialog = () => { setOpen(true); };
+    const closeLogoutDialog = () => { setOpen(false); };
+    const handleLogout = () => { dispatch(signoutThunk(history)); };
+
     const handleOnClickMenuButton = () => {
         dispatch(toggleDrawer(true));
     };
 
     return (
-        <AppBar position="static">
-            <Toolbar>
-                <IconButton edge="start" className={classes.menuButton} 
-                    onClick={handleOnClickMenuButton} color="inherit" aria-label="open drawer">
-                    <Menu />
-                </IconButton>
-                <Typography className={classes.title} variant="h6" noWrap>
-                    appbar header
-                </Typography>
-                <IconButton color="inherit" aria-label="miscMenu" edge="end">
-                    <AccountCircle />
-                </IconButton>
-            </Toolbar>
-        </AppBar>
+        <div>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton edge="start" className={classes.menuButton} 
+                        onClick={handleOnClickMenuButton} color="inherit" aria-label="open drawer">
+                        <Menu />
+                    </IconButton>
+                    <Typography className={classes.title} variant="h6" noWrap>
+                        appbar header
+                    </Typography>
+                    <IconButton color="inherit" aria-label="miscMenu" edge="end" 
+                        onClick={(e) => handleClick(e)}>
+                        <AccountCircle />
+                    </IconButton>
+                </Toolbar>
+            </AppBar>
+            <Menu id="general-menu" anchorEl={anchorEl} keepMounted 
+                open={Boolean(anchorEl)} onClose={handleClose}>
+                <MenuItem onClick={openLogoutDialog} >Logout</MenuItem>
+                <MenuItem>History</MenuItem>
+            </Menu>
+            <Dialog open={open} onClose={closeLogoutDialog} fullWidth={true} maxWidth="xs" 
+                aria-labelledby="form-dialog-logout" >
+                <DialogTitle id="logout-title">Logout?</DialogTitle>
+                <DialogActions>
+                    <Button onClick={closeLogoutDialog} color="secondary"> Cancel </Button>
+                    <Button onClick={handleLogout} color="primary"> OK </Button>
+                </DialogActions>
+            </Dialog>
+        </div>
     );
 };

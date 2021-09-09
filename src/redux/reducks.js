@@ -167,6 +167,7 @@ export const submitTimelineThunk = (data, history) => async(dispatch, getState) 
     });
 };
 
+//toggleDrawer
 export const toggleDrawer = (toggle) => async(dispatch, getState) => {
     dispatch({
         type: TOGGLE_DRAWER_VISIBILITY,
@@ -174,6 +175,11 @@ export const toggleDrawer = (toggle) => async(dispatch, getState) => {
             toggleDrawer: toggle
         }
     });
+};
+
+//signoutThunk
+export const signoutThunk = (history) => async (dispatch, getState) => {
+    //TODO
 };
 
 //store 
