@@ -7,7 +7,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import { toggleDrawer } from '../redux/reducks';
 
 
-export const TemporaryDrawer = () => {
+export const SnsDrawer = () => {
     const userState = useSelector((state) => state.snsReducer);
     const dispatch = useDispatch();
     const menuTexts = ['Profile', 'Follows', 'Timelines', 'Settings'];

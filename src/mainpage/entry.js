@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Typography, Grid, Container, Divider } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { toggleDrawer } from '../redux/reducks';
-import { TemporaryDrawer } from './drawer';
 import { TimelineCards } from '../timeline/timelineCards';
 import { TimelineForm } from '../timeline/timelineForm';
+import { SnsDrawer } from './drawer';
 import { SnsAppbar } from './appbar';
+import { SnsFooter } from './footer';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,48 +42,28 @@ const useStyles = makeStyles((theme) => ({
             },
         },
     },
-    footer: {
-        position: 'absolute',
-        left: 0,
-        bottom: 0,
-        width: '100%',
-        padding: '80px 0',
-        color: 'black',
-      },
 }));
 
 export const EntryPage = () => {
-    const dispatch = useDispatch();
     const classes = useStyles();
     const authData = useSelector((state) => state.snsReducer.authData);
 
-    if(!authData.token) return (<RedirectPage />);
-
-    const handleOnClickMenuButton = () => {
-        dispatch(toggleDrawer(true));
-    };
+    //if(!authData.token) return (<RedirectPage />);
 
     return (
-        <div>
-            <div className={classes.root}>
+        <div className={classes.root}>
             <SnsAppbar />
-            <TemporaryDrawer />
-            </div>
-            <div className={classes.root}>
-                <Grid container spacing={3}>
-                    <Grid item xs={3} />
-                    <Grid item xs={3}>
-                        <TimelineCards />
-                    </Grid>
-                    <Grid>
-                        <TimelineForm />
-                    </Grid>
+            <SnsDrawer />
+            <Grid container spacing={3}>
+                <Grid item xs={3} />
+                <Grid item xs={3}>
+                    <TimelineCards />
                 </Grid>
-            </div>
-            <Container component="footer" className={classes.footer}>
-                <Divider variant="middle" />
-                <Typography> ( footer text here ) </Typography>
-            </Container>
+                <Grid>
+                    <TimelineForm />
+                </Grid>
+            </Grid>
+            <SnsFooter />
         </div>
     );
 };

@@ -43,6 +43,7 @@ export const TimelineForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(submitTimelineThunk(newTm, history));
+        setNewTm({ ...newTm, text: '' });
     };
 
     return (

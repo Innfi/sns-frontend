@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, Dialog, DialogTitle, 
+    DialogActions, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Menu, AccountCircle } from '@material-ui/icons';
+import { Menu as MenuIcon, AccountCircle } from '@material-ui/icons';
 
-import { signoutThunk } from '../redux/reducks';
+import { signoutThunk, toggleDrawer } from '../redux/reducks';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -56,6 +57,7 @@ export const SnsAppbar = () => {
     const handleClick = (e) => { setAnchorEl(e.currentTarget) };
     const handleClose = () => { setAnchorEl(null) };
 
+    const [ open, setOpen ] = useState(false);
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -73,7 +75,7 @@ export const SnsAppbar = () => {
                 <Toolbar>
                     <IconButton edge="start" className={classes.menuButton} 
                         onClick={handleOnClickMenuButton} color="inherit" aria-label="open drawer">
-                        <Menu />
+                        <MenuIcon />
                     </IconButton>
                     <Typography className={classes.title} variant="h6" noWrap>
                         appbar header
