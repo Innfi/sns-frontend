@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { CssBaseline, TextField, Typography, Container } from '@material-ui/core';
-import { submitTimelineThunk } from '../redux/reducks';
+import { submitTimelineMediaThunk, submitTimelineThunk } from '../redux/reducks';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +42,10 @@ export const TimelineForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(submitTimelineThunk(newTm, history));
+        const data = new FormData(e.target);
+
+        //dispatch(submitTimelineThunk(newTm, history));
+        dispatch(submitTimelineMediaThunk(data, history));
         setNewTm({ ...newTm, text: '' });
     };
 
@@ -53,7 +56,8 @@ export const TimelineForm = () => {
                 <Typography component="h1" variant="h5">
                     type your moments
                 </Typography>
-                <form className={classes.form} noValidate onSubmit={(e) => handleSubmit(e)}>
+                <form className={classes.form} noValidate encType="multipart/form-data" 
+                  onSubmit={(e) => handleSubmit(e)}>
                     <TextField
                       variant="outlined"
                       margin="normal"
@@ -66,6 +70,7 @@ export const TimelineForm = () => {
                       autoFocus
                       onChange={(e) => handleChange(e)}
                     />
+                    <input type="file" name="file" id="file" />
                 </form>
             </div>
         </Container>

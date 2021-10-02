@@ -6,6 +6,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const SIGNUP_RESP = 'SIGNUP_RESP';
 const SIGNIN_RESP = 'SIGNIN_RESP';
 const LOAD_TIMELINE_RESP = 'LOAD_TIMELINE_RESP';
@@ -79,7 +81,7 @@ export const rootReducer = combineReducers({snsReducer})
 
 //actions 
 export const signUpThunk = (data, history) => async(dispatch, getState) => {
-    axios.post(`${process.env.REACT_APP_BACKEND_URL}/signup`, data)
+    axios.post(`${backendUrl}/signup`, data)
     .then((value) => {
         const response = value.data;
 
@@ -107,7 +109,7 @@ export const signUpThunk = (data, history) => async(dispatch, getState) => {
 };
 
 export const signInThunk = (data, history) => async (dispatch, getState) => {
-    axios.post(`${process.env.REACT_APP_BACKEND_URL}/signin`, data) 
+    axios.post(`${backendUrl}/signin`, data) 
     .then((value) => {
         const response = value.data;
 
@@ -129,7 +131,7 @@ export const signInThunk = (data, history) => async (dispatch, getState) => {
 export const loadTimelineThunk = (data, history) => async(dispatch, getState) => {
     const userId = data.userId;
 
-    axios.get(`${process.env.REACT_APP_BACKEND_URL}/timeline/${userId}`, {
+    axios.get(`${backendUrl}/timeline/${userId}`, {
         headers: {
             "Authorization": `Bearer ${getState().snsReducer.authData.token}`
         },
@@ -154,7 +156,7 @@ export const loadTimelineThunk = (data, history) => async(dispatch, getState) =>
 
 //submitTimeline
 export const submitTimelineThunk = (data, history) => async(dispatch, getState) => {
-    axios.post(`${process.env.REACT_APP_BACKEND_URL}/timeline`, data)
+    axios.post(`${backendUrl}/timeline`, data)
     .then((value) => {
         const response = value.data;
 
@@ -163,7 +165,22 @@ export const submitTimelineThunk = (data, history) => async(dispatch, getState) 
             payload: {
                 newTimeline: response.data
             }
-        })
+        });
+    });
+};
+
+export const submitTimelineMediaThunk = 
+    (data, history) => async (dispatch, getState) => {
+    axios.post(`${backendUrl/timeline2}`, data)
+    .then((value) => {
+        const response = value.data;
+
+        dispatch({
+            type: SUBMIT_TIMELINE_RESP,
+            paload: {
+                //TODO: handle multipart response 
+            }
+        });
     });
 };
 
