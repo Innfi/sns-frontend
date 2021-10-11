@@ -19,6 +19,7 @@ const TOGGLE_DRAWER_VISIBILITY = 'TOGGLE_DRAWER_VISIBILITY';
 //state model
 const initialState = {
     authData: {
+        userId: '',
         email: '',
         token: '',
     },
@@ -85,10 +86,14 @@ export const signUpThunk = (data, history) => async(dispatch, getState) => {
     .then((value) => {
         const response = value.data;
 
+        console.log(`resp.userId: ${response.userId}`);
+        console.log(`resp.email: ${response.email}`);
+
         dispatch({
             type: SIGNUP_RESP,
             payload: {
                 authData: {
+                    userId: response.userId,
                     email: response.email
                 }
             }
@@ -117,6 +122,7 @@ export const signInThunk = (data, history) => async (dispatch, getState) => {
             type: SIGNIN_RESP,
             payload: {
                 authData: {
+                    userId: response.userId,
                     email: response.email,
                     token: response.jwtToken
                 }
@@ -171,7 +177,7 @@ export const submitTimelineThunk = (data, history) => async(dispatch, getState) 
 
 export const submitTimelineMediaThunk = 
     (data, history) => async (dispatch, getState) => {
-    axios.post(`${backendUrl/timeline2}`, data)
+    axios.post(`${backendUrl}/timeline2`, data)
     .then((value) => {
         const response = value.data;
 
