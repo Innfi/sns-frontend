@@ -156,13 +156,15 @@ export const loadTimelineThunk = (data, history) => async(dispatch, getState) =>
             }
         });
 
-        history.push(`/timeline/${userId}`);
+        history.push(`/timeline`);
     });
 };
 
 //submitTimeline
 export const submitTimelineThunk = (data, history) => async(dispatch, getState) => {
-    axios.post(`${backendUrl}/timeline`, data)
+    const userId = data.userId;
+
+    axios.post(`${backendUrl}/timeline/${userId}`, data)
     .then((value) => {
         const response = value.data;
 
@@ -175,9 +177,10 @@ export const submitTimelineThunk = (data, history) => async(dispatch, getState) 
     });
 };
 
-export const submitTimelineMediaThunk = 
-    (data, history) => async (dispatch, getState) => {
-    axios.post(`${backendUrl}/timeline2`, data)
+export const submitTimelineMediaThunk = (data, history) => async (dispatch, getState) => {
+    const userId = data.userId;
+
+    axios.post(`${backendUrl}/timeline/media/${userId}`, data)
     .then((value) => {
         const response = value.data;
 
