@@ -10,14 +10,16 @@ export function TimelineCards() {
     const dispatch = useDispatch();
     const history = useHistory();
     const authData = useSelector((state) => state.snsReducer.authData);
-    const emailFromRedux = authData.email;
+    
     const [isLoading, setIsLoading] = useState(false);    
     const userTimeline = useSelector((state) => state.snsReducer.timeline);
+
+    const userId = authData.userId;
 
     useEffect(() => {
         const loadTimeline = async() => {
             setIsLoading(true);
-            await dispatch(loadTimelineThunk({ email: emailFromRedux }, history));
+            await dispatch(loadTimelineThunk({ userId: userId }, history));
             setIsLoading(false);
         };
 

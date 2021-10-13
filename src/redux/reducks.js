@@ -136,8 +136,10 @@ export const signInThunk = (data, history) => async (dispatch, getState) => {
 //localTimeline
 export const loadTimelineThunk = (data, history) => async(dispatch, getState) => {
     const userId = data.userId;
+    const url = `${backendUrl}/timeline/${userId}`;
+    console.log(`loadTimelineThunk] url: ${url}`);
 
-    axios.get(`${backendUrl}/timeline/${userId}`, {
+    axios.get(url, {
         headers: {
             "Authorization": `Bearer ${getState().snsReducer.authData.token}`
         },
