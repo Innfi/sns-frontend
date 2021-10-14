@@ -15,6 +15,7 @@ const SUBMIT_TIMELINE_RESP = 'SUBMIT_TIMELINE_RESP';
 const ERROR = 'ERROR';
 const TEMP_RESP = 'TEMP_RESP';
 const TOGGLE_DRAWER_VISIBILITY = 'TOGGLE_DRAWER_VISIBILITY';
+const NO_ACTION = 'NO_ACTION';
 
 //state model
 const initialState = {
@@ -56,7 +57,7 @@ const snsReducer = (state = initialState, action) => {
         case LOAD_TIMELINE_RESP:
             return {
                 ...state,
-                timeline: action.payload.userTimeline //fixme: aggregate
+                timeline: [...state.timeline, action.payload.userTimeline ]
             };
         case SUBMIT_TIMELINE_RESP:
             return {
@@ -73,6 +74,8 @@ const snsReducer = (state = initialState, action) => {
                 ...state,
                 drawerVisible: action.payload.toggleDrawer
             };
+        case NO_ACTION: 
+            return state;
         default: 
             return state;
     }
@@ -135,9 +138,8 @@ export const signInThunk = (data, history) => async (dispatch, getState) => {
 
 //localTimeline
 export const loadTimelineThunk = (data, history) => async(dispatch, getState) => {
-    const userId = data.userId;
+    const userId = data.userId;    
     const url = `${backendUrl}/timeline/${userId}`;
-    console.log(`loadTimelineThunk] url: ${url}`);
 
     axios.get(url, {
         headers: {
@@ -150,15 +152,19 @@ export const loadTimelineThunk = (data, history) => async(dispatch, getState) =>
     })
     .then((value) => {
         const response = value.data;
+        if(!response.timeline || response.timeline.length <= 0) {
+            dispatch({ type: NO_ACTION, payload: {}});
+            return;
+        }
 
         dispatch({
             type: LOAD_TIMELINE_RESP,
             payload: {
-                userTimeline: response.timeline
+                userTimeline: response.timeline ? response.timeline : []
             }
         });
 
-        history.push(`/timeline`);
+        //history.push(`/timeline`);
     });
 };
 
