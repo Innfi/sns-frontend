@@ -42,10 +42,10 @@ export const TimelineForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = new FormData(e.target);
+        //const data = new FormData(e.target);
 
-        //dispatch(submitTimelineThunk(newTm, history));
-        dispatch(submitTimelineMediaThunk(data, history));
+        dispatch(submitTimelineThunk(newTm, history));
+        //dispatch(submitTimelineMediaThunk(data, history));
         setNewTm({ ...newTm, text: '' });
     };
 

@@ -169,12 +169,22 @@ export const loadTimelineThunk = (data, history) => async(dispatch, getState) =>
 };
 
 //submitTimeline
-export const submitTimelineThunk = (data, history) => async(dispatch, getState) => {
-    const userId = data.userId;
+export const submitTimelineThunk = (data, history) => async (dispatch, getState) => {
+    const authData = store.getState().snsReducer.authData;
+    const userId = authData.userId;
+    const nickname = authData.nickname;
 
-    axios.post(`${backendUrl}/timeline/${userId}`, data)
+    axios.post(`${backendUrl}/timeline/${userId}`, {
+        authorId: nickname, 
+        text: data.text
+    }, {
+        headers: {
+            "Authorization": `Bearer ${authData.token}`
+        }
+    })
     .then((value) => {
         const response = value.data;
+        console.log(`response: ${JSON.stringify(response)}`);
 
         dispatch({
             type: SUBMIT_TIMELINE_RESP,
