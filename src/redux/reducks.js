@@ -28,10 +28,14 @@ const initialState = {
     userData: {},
     timeline: [{
         authorId: 'innfi',
-        text: 'timeline starts from here'
+        text: 'timeline starts from here', 
+        date: new Date(), 
+        tmId: 'dummy1'
     }, {
         authorId: 'ennfi',
-        text: 'congrats!'
+        text: 'congrats!',
+        date: new Date(), 
+        tmId: 'dummy2'
     }], 
     drawerVisible: false
 };
@@ -189,7 +193,7 @@ export const submitTimelineThunk = (data, history) => async (dispatch, getState)
         dispatch({
             type: SUBMIT_TIMELINE_RESP,
             payload: {
-                newTimeline: response.data
+                newTimeline: response.newTimeline
             }
         });
     });
