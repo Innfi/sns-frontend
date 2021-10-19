@@ -21,6 +21,7 @@ const NO_ACTION = 'NO_ACTION';
 const initialState = {
     authData: {
         userId: '',
+        nickname: '',
         email: '',
         token: '',
     },
@@ -61,12 +62,12 @@ const snsReducer = (state = initialState, action) => {
         case LOAD_TIMELINE_RESP:
             return {
                 ...state,
-                timeline: [...state.timeline, action.payload.userTimeline ]
+                timeline: [ action.payload.userTimeline, ...state.timeline ]
             };
         case SUBMIT_TIMELINE_RESP:
             return {
                 ...state,
-                timeline: [...state.timeline, action.payload.newTimeline] 
+                timeline: [ action.payload.newTimeline, ...state.timeline ] 
             };
         case TEMP_RESP:
             return {
@@ -125,11 +126,15 @@ export const signInThunk = (data, history) => async (dispatch, getState) => {
     .then((value) => {
         const response = value.data;
 
+        console.log(`signIn response: ${JSON.stringify(response)}`);
+        console.log(`signIn response: ${response.nickname}`);
+
         dispatch({
             type: SIGNIN_RESP,
             payload: {
                 authData: {
                     userId: response.userId,
+                    nickname: response.nickname, 
                     email: response.email,
                     token: response.jwtToken
                 }
@@ -157,14 +162,14 @@ export const loadTimelineThunk = (data, history) => async(dispatch, getState) =>
     .then((value) => {
         const response = value.data;
         if(!response.timeline || response.timeline.length <= 0) {
-            dispatch({ type: NO_ACTION, payload: {}});
+            dispatch({ type: NO_ACTION, payload: {} });
             return;
         }
 
         dispatch({
             type: LOAD_TIMELINE_RESP,
             payload: {
-                userTimeline: response.timeline ? response.timeline : []
+                userTimeline: response.timeline 
             }
         });
 
@@ -176,7 +181,8 @@ export const loadTimelineThunk = (data, history) => async(dispatch, getState) =>
 export const submitTimelineThunk = (data, history) => async (dispatch, getState) => {
     const authData = store.getState().snsReducer.authData;
     const userId = authData.userId;
-    const nickname = authData.nickname;
+    const nickname = store.getState().snsReducer.authData.nickname;
+    console.log(`nickname: ${nickname}`);
 
     axios.post(`${backendUrl}/timeline/${userId}`, {
         authorId: nickname, 

@@ -24,7 +24,7 @@ export function TimelineCards() {
         };
 
         loadTimeline();
-    }, [dispatch]);
+    }, [ dispatch ]);
 
     if(isLoading) return (
         <div><p>loading...</p></div>
