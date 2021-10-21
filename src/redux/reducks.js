@@ -181,8 +181,7 @@ export const loadTimelineThunk = (data, history) => async(dispatch, getState) =>
 export const submitTimelineThunk = (data, history) => async (dispatch, getState) => {
     const authData = store.getState().snsReducer.authData;
     const userId = authData.userId;
-    const nickname = store.getState().snsReducer.authData.nickname;
-    console.log(`nickname: ${nickname}`);
+    const nickname = authData.nickname;
 
     axios.post(`${backendUrl}/timeline/${userId}`, {
         authorId: nickname, 
@@ -206,18 +205,26 @@ export const submitTimelineThunk = (data, history) => async (dispatch, getState)
 };
 
 export const submitTimelineMediaThunk = (data, history) => async (dispatch, getState) => {
-    const userId = data.userId;
+    //const userId = data.userId;
+    const authData = store.getState().snsReducer.authData;
+    const userId = authData.userId;
 
-    axios.post(`${backendUrl}/timeline/media/${userId}`, data)
+    axios.post(`${backendUrl}/timeline/media/${userId}`, data, {
+        headers: {
+            "Authorization": `Bearer ${authData.token}`
+        }
+    })
     .then((value) => {
         const response = value.data;
+        console.log(`response: ${JSON.stringify(response)}`);
 
-        dispatch({
-            type: SUBMIT_TIMELINE_RESP,
-            paload: {
-                //TODO: handle multipart response 
-            }
-        });
+        dispatch({ type: NO_ACTION, paylaod: {} });
+        // dispatch({
+        //     type: SUBMIT_TIMELINE_RESP,
+        //     paload: {
+        //         //TODO: handle multipart response 
+        //     }
+        // });
     });
 };
 
