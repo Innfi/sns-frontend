@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { CssBaseline, TextField, Typography, Container } from '@material-ui/core';
+import { Button, CssBaseline, TextField, Typography, Container, Divider, IconButton } from '@material-ui/core';
+import { Image } from '@material-ui/icons';
 import { submitTimelineMediaThunk, submitTimelineThunk } from '../redux/reducks';
 
 
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    alignItems: 'right'
   },
 }));
 
@@ -48,7 +50,7 @@ export const TimelineForm = () => {
         dispatch(submitTimelineMediaThunk(data, history));
         setNewTm({ ...newTm, text: '' });
     };
-
+    //<input type="file" name="file" id="file" />
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -56,8 +58,7 @@ export const TimelineForm = () => {
                 <Typography component="h1" variant="h5">
                     type your moments
                 </Typography>
-                <form className={classes.form} noValidate encType="multipart/form-data" 
-                  onSubmit={(e) => handleSubmit(e)}>
+                <form className={classes.form} noValidate encType="multipart/form-data">
                     <TextField
                       variant="outlined"
                       margin="normal"
@@ -70,7 +71,13 @@ export const TimelineForm = () => {
                       autoFocus
                       onChange={(e) => handleChange(e)}
                     />
-                    <input type="file" name="file" id="file" />
+                    <Button variant="contained" component="label" 
+                      className={classes.submit}>
+                      Upload Image 
+                      <input type="file" hidden />
+                    </Button>
+                    <Button type="submit" variant="contained" color="primary" 
+                      className={classes.submit}>Submit</Button>
                 </form>
             </div>
         </Container>
