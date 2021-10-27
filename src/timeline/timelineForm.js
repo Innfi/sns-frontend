@@ -44,12 +44,20 @@ export const TimelineForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = new FormData(e.target);
 
-        //dispatch(submitTimelineThunk(newTm, history));
-        dispatch(submitTimelineMediaThunk(data, history));
+        dispatch(submitTimelineThunk(newTm, history));
+        
         setNewTm({ ...newTm, text: '' });
     };
+
+    const handleSubmitMedia = (e) => {
+      e.preventDefault();
+        const data = new FormData();
+        data.append("filename", e.target);
+
+        dispatch(submitTimelineMediaThunk(data, history));
+    };
+
     //<input type="file" name="file" id="file" />
     return (
         <Container component="main" maxWidth="xs">
@@ -71,13 +79,18 @@ export const TimelineForm = () => {
                       autoFocus
                       onChange={(e) => handleChange(e)}
                     />
+                    <Button type="submit" variant="contained" color="primary" 
+                      className={classes.submit} onClick={handleSubmit}>Submit</Button>
+                </form>
+                <Divider />
+                <form className={classes.form} noValidate encType="multipart/form-data">
                     <Button variant="contained" component="label" 
                       className={classes.submit}>
                       Upload Image 
                       <input type="file" hidden />
                     </Button>
                     <Button type="submit" variant="contained" color="primary" 
-                      className={classes.submit}>Submit</Button>
+                      className={classes.submit} onClick={handleSubmitMedia}>Submit</Button>
                 </form>
             </div>
         </Container>
