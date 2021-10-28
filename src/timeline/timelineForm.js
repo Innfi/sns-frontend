@@ -52,8 +52,11 @@ export const TimelineForm = () => {
 
     const handleSubmitMedia = (e) => {
       e.preventDefault();
-        const data = new FormData();
-        data.append("filename", e.target);
+        console.log(`form: ${e.form}`);
+        console.log(`FormData: ${e.FormData}`);
+        console.log(`target: ${JSON.stringify(e.target)}`);
+        const data = new FormData(e.form);
+        //data.append("filename", e.target);
 
         dispatch(submitTimelineMediaThunk(data, history));
     };
@@ -85,12 +88,15 @@ export const TimelineForm = () => {
                 <Divider />
                 <form className={classes.form} noValidate encType="multipart/form-data">
                     <Button variant="contained" component="label" 
-                      className={classes.submit}>
+                      className={classes.submit} onSubmit={handleSubmitMedia}>
                       Upload Image 
                       <input type="file" hidden />
                     </Button>
                     <Button type="submit" variant="contained" color="primary" 
-                      className={classes.submit} onClick={handleSubmitMedia}>Submit</Button>
+                      className={classes.submit}>
+                        Submit
+                      <input type="submit" hidden/>
+                    </Button>
                 </form>
             </div>
         </Container>
