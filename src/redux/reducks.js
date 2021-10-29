@@ -205,7 +205,6 @@ export const submitTimelineThunk = (data, history) => async (dispatch, getState)
 };
 
 export const submitTimelineMediaThunk = (data, history) => async (dispatch, getState) => {
-    //const userId = data.userId;
     const authData = store.getState().snsReducer.authData;
     const userId = authData.userId;
 
