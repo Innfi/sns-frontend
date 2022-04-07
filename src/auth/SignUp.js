@@ -11,8 +11,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { signUpThunk } from '../redux/reducks';
 
+import { signUpThunk } from '../redux/reducks';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -42,11 +42,11 @@ export default function SignUp() {
   const [userdata, setUserData] = useState({
     nickname: '',
     email: '',
-    password: ''
+    password: '',
   });
 
   function handleChange(e) {
-      setUserData({...userdata, [e.target.name]: e.target.value});
+    setUserData({ ...userdata, [e.target.name]: e.target.value });
   }
 
   function handleSubmit(e) {
@@ -64,7 +64,13 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate onSubmit={(e) => { handleSubmit(e); }}>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={(e) => {
+            handleSubmit(e);
+          }}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -75,7 +81,7 @@ export default function SignUp() {
                 fullWidth
                 id="nickname"
                 label="nickname"
-                autoFocus 
+                autoFocus
                 onChange={(e) => handleChange(e)}
               />
             </Grid>
@@ -126,4 +132,3 @@ export default function SignUp() {
     </Container>
   );
 }
-

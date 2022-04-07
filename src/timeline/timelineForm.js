@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, CssBaseline, TextField, Typography, Container, } from '@material-ui/core';
-import { submitTimelineMediaThunk } from '../redux/reducks';
+import {
+  Button,
+  CssBaseline,
+  TextField,
+  Typography,
+  Container,
+} from '@material-ui/core';
 
+import { submitTimelineMediaThunk } from '../redux/reducks';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -24,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    alignItems: 'right'
+    alignItems: 'right',
   },
 }));
 
@@ -35,11 +40,11 @@ export const TimelineForm = () => {
   const authData = useSelector((state) => state.snsReducer.authData);
 
   const [newTm, setNewTm] = useState({
-    text: '' //TODO: other types of media
+    text: '', //TODO: other types of media
   });
 
   const handleChange = (e) => {
-    setNewTm({...newTm, [e.target.name]: e.target.value});
+    setNewTm({ ...newTm, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
@@ -49,40 +54,53 @@ export const TimelineForm = () => {
     formData.append('authorId', authData.nickname);
 
     dispatch(submitTimelineMediaThunk(formData, history));
-      
+
     setNewTm({ ...newTm, text: '' });
   };
 
   return (
-      <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <div className={classes.paper}>
-              <Typography component="h1" variant="h5">
-                  type your moments
-              </Typography>
-              <form className={classes.form} noValidate encType="multipart/form-data" 
-                onSubmit={handleSubmit}>
-                  <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="text"
-                    label="timeline texts"
-                    name="text"
-                    autoComplete="timeline texts"
-                    autoFocus
-                    onChange={(e) => handleChange(e)}
-                  />
-                  <Button variant="contained" component="label" 
-                    className={classes.submit}>
-                    Upload Image 
-                    <input type="file" name="file" id="file" hidden />
-                  </Button>
-                  <Button type="submit" variant="contained" color="primary" 
-                    className={classes.submit}>Send</Button>
-              </form>
-          </div>
-      </Container>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Typography component="h1" variant="h5">
+          type your moments
+        </Typography>
+        <form
+          className={classes.form}
+          noValidate
+          encType="multipart/form-data"
+          onSubmit={handleSubmit}
+        >
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="text"
+            label="timeline texts"
+            name="text"
+            autoComplete="timeline texts"
+            autoFocus
+            onChange={(e) => handleChange(e)}
+          />
+          <Button
+            variant="contained"
+            component="label"
+            className={classes.submit}
+          >
+            Upload Image
+            <input type="file" name="file" id="file" hidden />
+          </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            Send
+          </Button>
+        </form>
+      </div>
+    </Container>
   );
 };
