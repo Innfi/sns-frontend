@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { signInThunk } from '../redux/reducks';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,6 +13,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { signInThunk } from '../redux/reducks';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -80,7 +80,7 @@ export default function SignIn() {
             autoFocus
             onChange={(e) => handleChange(e)}
             defaultValue={loginData.email}
-          ></TextField>
+          />
           <TextField
             variant="outlined"
             margin="normal"
@@ -114,7 +114,7 @@ export default function SignIn() {
             </Grid>
             <Grid item>
               <Link onClick={() => history.push('/signup')} variant="body2">
-                {"Don't have an account? Sign Up"}
+                Don't have an account? Sign Up
               </Link>
             </Grid>
           </Grid>

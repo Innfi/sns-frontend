@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { TimelineCards } from '../timeline/timelineCards';
-import { TimelineForm } from '../timeline/timelineForm';
-import { SnsDrawer } from './drawer';
-import { SnsAppbar } from './appbar';
-import { SnsFooter } from './footer';
+import TimelineCards from '../timeline/timelineCards';
+import TimelineForm from '../timeline/timelineForm';
+import SnsDrawer from './drawer';
+import SnsAppbar from './appbar';
+import SnsFooter from './footer';
 
 const useStyles = makeStyles((theme) => ({
   root: { flexGrow: 1, marginBottom: 10 },
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const EntryPage = () => {
+export default function EntryPage() {
   const classes = useStyles();
   const authData = useSelector((state) => state.snsReducer.authData);
 
@@ -75,16 +75,16 @@ export const EntryPage = () => {
       <SnsFooter />
     </div>
   );
-};
+}
 
-const RedirectPage = () => {
+function RedirectPage() {
   const history = useHistory();
 
-  // useEffect(() => {
-  //     //settimeout?
+  useEffect(() => {
+    // settimeout?
 
-  //     history.push('/signin');
-  // });
+    history.push('/signin');
+  });
 
   return <div>entry page (unauthorized)</div>;
-};
+}

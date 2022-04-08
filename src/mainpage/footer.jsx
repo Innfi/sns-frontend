@@ -1,7 +1,9 @@
-import { Container, Divider, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core';
+import React from 'react';
+import {
+  Container, Divider, Typography, makeStyles,
+} from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   footer: {
     position: 'absolute',
     left: 0,
@@ -12,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SnsFooter = () => {
+export default function SnsFooter() {
   const classes = useStyles();
 
   return (
@@ -21,4 +23,4 @@ export const SnsFooter = () => {
       <Typography> ( footer text here ) </Typography>
     </Container>
   );
-};
+}

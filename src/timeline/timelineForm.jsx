@@ -33,14 +33,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TimelineForm = () => {
+export default function TimelineForm() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
   const authData = useSelector((state) => state.snsReducer.authData);
 
   const [newTm, setNewTm] = useState({
-    text: '', //TODO: other types of media
+    text: '', // TODO: other types of media
   });
 
   const handleChange = (e) => {
@@ -103,4 +103,4 @@ export const TimelineForm = () => {
       </div>
     </Container>
   );
-};
+}

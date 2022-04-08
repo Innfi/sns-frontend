@@ -9,6 +9,7 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const SIGNUP_RESP = 'SIGNUP_RESP';
 const SIGNIN_RESP = 'SIGNIN_RESP';
+const SIGNOUT_RESP = 'SIGNOUT_RESP';
 const LOAD_TIMELINE_RESP = 'LOAD_TIMELINE_RESP';
 const SUBMIT_TIMELINE_RESP = 'SUBMIT_TIMELINE_RESP';
 const ERROR = 'ERROR';
@@ -16,7 +17,7 @@ const TEMP_RESP = 'TEMP_RESP';
 const TOGGLE_DRAWER_VISIBILITY = 'TOGGLE_DRAWER_VISIBILITY';
 const NO_ACTION = 'NO_ACTION';
 
-//state model
+// state model
 const initialState = {
   authData: {
     userId: '',
@@ -43,7 +44,7 @@ const initialState = {
   drawerVisible: false,
 };
 
-//reducers
+// reducers
 const snsReducer = (state = initialState, action) => {
   switch (action.type) {
     case SIGNUP_RESP:
@@ -55,6 +56,16 @@ const snsReducer = (state = initialState, action) => {
       return {
         ...state,
         authData: action.payload.authData,
+      };
+    case SIGNOUT_RESP:
+      return {
+        ...state,
+        authData: {
+          userId: '',
+          nickname: '',
+          email: '',
+          token: '',
+        },
       };
     case ERROR:
       return {
@@ -90,15 +101,15 @@ const snsReducer = (state = initialState, action) => {
 
 export const rootReducer = combineReducers({ snsReducer });
 
-//actions
-export const signUpThunk = (data, history) => async (dispatch, getState) => {
+// store
+export const store = createStore(rootReducer, applyMiddleware(thunk));
+
+// actions
+export const signUpThunk = (data, history) => async (dispatch) => {
   axios
     .post(`${backendUrl}/signup`, data)
     .then((value) => {
       const response = value.data;
-
-      console.log(`resp.userId: ${response.userId}`);
-      console.log(`resp.email: ${response.email}`);
 
       dispatch({
         type: SIGNUP_RESP,
@@ -117,6 +128,7 @@ export const signUpThunk = (data, history) => async (dispatch, getState) => {
         type: ERROR,
         payload: {
           errorMsg: 'signUpThunk failed',
+          msg: err,
         },
       });
 
@@ -124,12 +136,9 @@ export const signUpThunk = (data, history) => async (dispatch, getState) => {
     });
 };
 
-export const signInThunk = (data, history) => async (dispatch, getState) => {
+export const signInThunk = (data, history) => async (dispatch) => {
   axios.post(`${backendUrl}/signin`, data).then((value) => {
     const response = value.data;
-
-    console.log(`signIn response: ${JSON.stringify(response)}`);
-    console.log(`signIn response: ${response.nickname}`);
 
     dispatch({
       type: SIGNIN_RESP,
@@ -147,101 +156,89 @@ export const signInThunk = (data, history) => async (dispatch, getState) => {
   });
 };
 
-//localTimeline
-export const loadTimelineThunk =
-  (data, history) => async (dispatch, getState) => {
-    const userId = data.userId;
-    const url = `${backendUrl}/timeline/${userId}`;
+// localTimeline
+export const loadTimelineThunk = (data) => async (dispatch, getState) => {
+  const { userId } = data;
+  const url = `${backendUrl}/timeline/${userId}`;
 
-    axios
-      .get(url, {
-        headers: {
-          Authorization: `Bearer ${getState().snsReducer.authData.token}`,
+  axios
+    .get(url, {
+      headers: {
+        Authorization: `Bearer ${getState().snsReducer.authData.token}`,
+      },
+      params: {
+        // fixme
+        page: 0,
+        limit: 3,
+      },
+    })
+    .then((value) => {
+      const response = value.data;
+      if (!response.timeline || response.timeline.length <= 0) {
+        dispatch({ type: NO_ACTION, payload: {} });
+        return;
+      }
+
+      dispatch({
+        type: LOAD_TIMELINE_RESP,
+        payload: {
+          userTimeline: response.timeline,
         },
-        params: {
-          //fixme
-          page: 0,
-          limit: 3,
-        },
-      })
-      .then((value) => {
-        const response = value.data;
-        if (!response.timeline || response.timeline.length <= 0) {
-          dispatch({ type: NO_ACTION, payload: {} });
-          return;
-        }
-
-        dispatch({
-          type: LOAD_TIMELINE_RESP,
-          payload: {
-            userTimeline: response.timeline,
-          },
-        });
-
-        //history.push(`/timeline`);
       });
-  };
 
-//submitTimeline
-export const submitTimelineThunk =
-  (data, history) => async (dispatch, getState) => {
-    const authData = store.getState().snsReducer.authData;
-    const userId = authData.userId;
-    const nickname = authData.nickname;
+      // history.push(`/timeline`);
+    });
+};
 
-    axios
-      .post(
-        `${backendUrl}/timeline/${userId}`,
-        {
-          authorId: nickname,
-          text: data.text,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${authData.token}`,
-          },
-        },
-      )
-      .then((value) => {
-        const response = value.data;
-        console.log(`response: ${JSON.stringify(response)}`);
+// submitTimeline
+export const submitTimelineThunk = (data) => async (dispatch) => {
+  const { authData } = store.getState().snsReducer;
+  const { userId } = authData;
+  const { nickname } = authData;
 
-        dispatch({
-          type: SUBMIT_TIMELINE_RESP,
-          payload: {
-            newTimeline: response.newTimeline,
-          },
-        });
-      });
-  };
-
-export const submitTimelineMediaThunk =
-  (data, history) => async (dispatch, getState) => {
-    const authData = store.getState().snsReducer.authData;
-    const userId = authData.userId;
-
-    axios
-      .post(`${backendUrl}/timeline/media/${userId}`, data, {
+  axios
+    .post(
+      `${backendUrl}/timeline/${userId}`,
+      {
+        authorId: nickname,
+        text: data.text,
+      },
+      {
         headers: {
           Authorization: `Bearer ${authData.token}`,
         },
-      })
-      .then((value) => {
-        const response = value.data;
-        console.log(`response: ${JSON.stringify(response)}`);
-
-        dispatch({ type: NO_ACTION, paylaod: {} });
-        // dispatch({
-        //     type: SUBMIT_TIMELINE_RESP,
-        //     paload: {
-        //         //TODO: handle multipart response
-        //     }
-        // });
+      },
+    )
+    .then((value) => {
+      const response = value.data;
+      dispatch({
+        type: SUBMIT_TIMELINE_RESP,
+        payload: {
+          newTimeline: response.newTimeline,
+        },
       });
-  };
+    });
+};
 
-//toggleDrawer
-export const toggleDrawer = (toggle) => async (dispatch, getState) => {
+export const submitTimelineMediaThunk = (data) => async (dispatch) => {
+  const { authData } = store.getState().snsReducer;
+  const { userId } = authData;
+
+  axios
+    .post(`${backendUrl}/timeline/media/${userId}`, data, {
+      headers: {
+        Authorization: `Bearer ${authData.token}`,
+      },
+    })
+    .then((value) => {
+      const response = value.data;
+
+      dispatch({ type: NO_ACTION, paylaod: { response } });
+    });
+};
+
+// toggleDrawer
+export const toggleDrawer = (toggle) => async (dispatch) => {
   dispatch({
     type: TOGGLE_DRAWER_VISIBILITY,
     payload: {
@@ -250,10 +247,11 @@ export const toggleDrawer = (toggle) => async (dispatch, getState) => {
   });
 };
 
-//signoutThunk
-export const signoutThunk = (history) => async (dispatch, getState) => {
-  //TODO
-};
+// signoutThunk
+export const signoutThunk = (history) => async (dispatch) => {
+  dispatch({
+    type: SIGNOUT_RESP,
+  });
 
-//store
-export const store = createStore(rootReducer, applyMiddleware(thunk));
+  history.push('/signin');
+};

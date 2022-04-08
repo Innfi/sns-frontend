@@ -21,8 +21,8 @@ const useStyles = makeStyles({
   avatar: { backgroundColor: red[500] },
 });
 
-export const TimelineUnit = (timeline, key) => {
-  const { authorId, text } = timeline.props;
+export default function TimelineUnit(timeline) {
+  const { authorId, text } = timeline;
   const classes = useStyles();
   const [sbOpen, setSbOpen] = useState(false);
 
@@ -30,24 +30,24 @@ export const TimelineUnit = (timeline, key) => {
     setSbOpen(true);
   };
 
-  const handleSnackbarClose = (event) => {
+  const handleSnackbarClose = () => {
     setSbOpen(false);
   };
 
   return (
-    <React.Fragment>
+    <>
       <Card className={classes.root}>
         <CardHeader
-          avatar={
+          avatar={(
             <Avatar aria-label="cardAvatar" className={classes.avatar}>
               {authorId}
             </Avatar>
-          }
-          action={
+          )}
+          action={(
             <IconButton aria-label="settings" onClick={handleMoreVertClicked}>
               <MoreVertIcon />
             </IconButton>
-          }
+          )}
           title={authorId}
           subheader="users moment"
         />
@@ -71,8 +71,8 @@ export const TimelineUnit = (timeline, key) => {
           open={sbOpen}
           autoHideDuration={2000}
           message="snackbar opened"
-          action={
-            <React.Fragment>
+          action={(
+            <>
               <Button
                 color="secondary"
                 size="small"
@@ -88,10 +88,10 @@ export const TimelineUnit = (timeline, key) => {
               >
                 <CloseIcon fontSize="small" />
               </IconButton>
-            </React.Fragment>
-          }
+            </>
+          )}
         />
       </div>
-    </React.Fragment>
+    </>
   );
-};
+}

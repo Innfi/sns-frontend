@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SnsAppbar = () => {
+export default function SnsAppbar() {
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -137,7 +137,7 @@ export const SnsAppbar = () => {
       <Dialog
         open={open}
         onClose={closeLogoutDialog}
-        fullWidth={true}
+        fullWidth
         maxWidth="xs"
         aria-labelledby="form-dialog-logout"
       >
@@ -145,14 +145,16 @@ export const SnsAppbar = () => {
         <DialogActions>
           <Button onClick={closeLogoutDialog} color="secondary">
             {' '}
-            Cancel{' '}
+            Cancel
+            {' '}
           </Button>
           <Button onClick={handleLogout} color="primary">
             {' '}
-            OK{' '}
+            OK
+            {' '}
           </Button>
         </DialogActions>
       </Dialog>
     </div>
   );
-};
+}

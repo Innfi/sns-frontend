@@ -12,12 +12,12 @@ import MailIcon from '@material-ui/icons/Mail';
 
 import { toggleDrawer } from '../redux/reducks';
 
-export const SnsDrawer = () => {
+export default function SnsDrawer() {
   const userState = useSelector((state) => state.snsReducer);
   const dispatch = useDispatch();
   const menuTexts = ['Profile', 'Follows', 'Timelines', 'Settings'];
 
-  const closeDrawer = (event) => {
+  const closeDrawer = () => {
     dispatch(toggleDrawer(false));
   };
 
@@ -37,4 +37,4 @@ export const SnsDrawer = () => {
       </Drawer>
     </div>
   );
-};
+}
